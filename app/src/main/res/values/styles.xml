@@ -1,0 +1,45 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/transparent</item>
+    </style>
+
+    <style name="AppTheme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+
+    <!-- font style-->
+    <style name="font_light">
+        <item name="android:fontFamily">@font/scd3</item>
+        <item name="android:textSize">@dimen/font_light</item>
+    </style>
+
+    <style name="font_regular">
+        <item name="android:fontFamily">@font/scd4</item>
+        <item name="android:textSize">@dimen/font_regular</item>
+    </style>
+
+    <style name="font_medium">
+        <item name="android:fontFamily">@font/scd5</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="font_bold">
+        <item name="android:fontFamily">@font/scd6</item>
+        <item name="android:textSize">@dimen/font_bold</item>
+    </style>
+
+    <style name="font_black">
+        <item name="android:fontFamily">@font/scd9</item>
+        <item name="android:textSize">@dimen/font_black</item>
+    </style>
+
+
+
+</resources>

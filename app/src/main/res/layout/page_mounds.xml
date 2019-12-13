@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:background="@color/colorBlack">
+
+    <com.google.ar.sceneform.SceneView
+        android:id="@+id/sceneView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlack"
+        />
+
+    <include
+        android:id="@+id/btnClose"
+        layout="@layout/btn_close"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="right|top"
+        android:layout_marginTop="@dimen/margin_regular"
+        android:layout_marginRight="@dimen/margin_regular" />
+
+    <ImageButton
+        android:id="@+id/btnCardboard"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@color/transparent"
+        android:scaleType="fitXY"
+        android:layout_gravity="left|top"
+        android:layout_marginTop="@dimen/margin_regular"
+        android:layout_marginLeft="@dimen/margin_regular"
+        app:srcCompat="@drawable/btn_cardboard" />
+
+    <ImageButton
+        android:id="@+id/btnPano"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@color/transparent"
+        android:scaleType="fitXY"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="@dimen/margin_regular"
+        android:layout_marginRight="@dimen/margin_regular"
+        app:srcCompat="@drawable/btn_pano" />
+
+    <com.enoughmedia.pangyomuseum.component.InfoMessage
+        android:id="@+id/infoMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+</FrameLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- font size -->
+    <dimen name="font_black">36dp</dimen>
+    <dimen name="font_heavy">28dp</dimen>
+    <dimen name="font_extra_bold">24dp</dimen>
+    <dimen name="font_bold">20dp</dimen>
+    <dimen name="font_medium">18dp</dimen>
+    <dimen name="font_regular">16dp</dimen>
+    <dimen name="font_light">14dp</dimen>
+    <dimen name="font_extra_light">12dp</dimen>
+    <dimen name="font_thin">10dp</dimen>
+
+    <!-- margin -->
+    <dimen name="margin_heavy">32dp</dimen>
+    <dimen name="margin_medium">24dp</dimen>
+    <dimen name="margin_regular">20dp</dimen>
+    <dimen name="margin_light">16dp</dimen>
+    <dimen name="margin_thin">10dp</dimen>
+    <dimen name="margin_extra_thin">5dp</dimen>
+
+    <dimen name="margin_header">30dp</dimen>
+    <dimen name="margin_navi">30dp</dimen>
+
+</resources>
