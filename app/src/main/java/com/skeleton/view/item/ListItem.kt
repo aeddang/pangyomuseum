@@ -23,7 +23,6 @@ abstract class ListItem: FrameLayout,  Page {
         super.onAttachedToWindow()
         onCreatedView()
         onAttached()
-
     }
 
     @CallSuper

@@ -5,8 +5,14 @@
     <string name="intro_loading">데이터를 불러오고 있습니다.</string>
 
     <string name="page_map_camera_guide">카메라 버튼을 누르고 주변에\n마커 이미지를 비춰보세요.</string>
+    <string name="page_mounds_find_info">새로운 유물이\n도감에 수집되었습니다.</string>
 
     <string name="popup_scan_guide">마커 이미지를\n찾아 비춰보세요.</string>
+
+    <string name="page_book_title">유물 도감</string>
+    <string name="page_book_find">찾은 유물</string>
+    <string name="page_book_search">찾아야 할 유물</string>
+
 
     <string name="popup_guide_title">체험 안내</string>
     <string name="popup_guide_step">step</string>
@@ -19,6 +25,8 @@
     <string name="popup_gesture_text0">확대</string>
     <string name="popup_gesture_text1">축소</string>
     <string name="popup_gesture_text2">회전</string>
+
+
 
     <string name="btn_check_review">다시 보지 않기</string>
 

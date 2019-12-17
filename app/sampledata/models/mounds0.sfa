@@ -1,0 +1,69 @@
+{
+  animations: [
+    {
+      path: 'sampledata/models/mounds0.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'Material #28',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'stone',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/mounds0.fbx',
+    name: 'mounds0',
+    recenter: 'root',
+    scale: 0.64941700000000002,
+  },
+  samplers: [
+    {
+      file: 'sampledata/models/mounds0.fbm/stone.jpg',
+      name: 'stone',
+      pipeline_name: 'mounds0.fbm/stone.jpg',
+    },
+  ],
+  version: '0.54:2',
+}

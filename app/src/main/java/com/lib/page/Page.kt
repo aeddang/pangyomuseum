@@ -57,9 +57,9 @@ interface Presenter<T> {
     fun clearPageHistory(id:T?=null): Presenter<T>
     fun closePopup(id:T,isAni:Boolean = true): Presenter<T>
     fun closeAllPopup(isAni:Boolean = true): Presenter<T>
-    fun openPopup(id:T,param:Map<String, Any>? = null, sharedElement:View? = null, transitionName:String? = null): Presenter<T>
+    fun openPopup(id:T,param:Map<String, Any?>? = null, sharedElement:View? = null, transitionName:String? = null): Presenter<T>
     fun pageStart(id:T): Presenter<T>
-    fun pageChange(id:T,param:Map<String, Any>? = null, sharedElement:View? = null, transitionName:String? = null): Presenter<T>
+    fun pageChange(id:T,param:Map<String, Any?>? = null, sharedElement:View? = null, transitionName:String? = null): Presenter<T>
     fun hasPermissions( permissions: Array<String> ): Boolean
     fun requestPermission( permissions: Array<out String>, requester: PageRequestPermission)
     fun loading(isRock:Boolean = false): Presenter<T>
@@ -68,7 +68,7 @@ interface Presenter<T> {
 }
 
 interface Activity<T> {
-    fun getPrevPage():Pair< T, Map< String, Any >? >?
+    fun getPrevPage():Pair< T, Map< String, Any? >? >?
     fun getCurrentPageFragment(): PageFragment?
     fun getCurrentFragment(): PageFragment?
     fun getCurrentContext(): Context
@@ -83,8 +83,8 @@ interface View<T> {
     fun onBack(id:T)
     fun onBack()
     fun onFinish()
-    fun onPageChange(id:T,param:Map<String, Any>? = null, sharedElement: View? = null, transitionName:String? = null)
-    fun onOpenPopup(id:T, param:Map<String, Any>? = null, sharedElement: View? = null, transitionName:String? = null)
+    fun onPageChange(id:T,param:Map<String, Any?>? = null, sharedElement: View? = null, transitionName:String? = null)
+    fun onOpenPopup(id:T, param:Map<String, Any?>? = null, sharedElement: View? = null, transitionName:String? = null)
     fun onClosePopup(id:T, isAni:Boolean = true)
     fun onCloseAllPopup(isAni:Boolean = true)
     fun onShowNavigation(){}

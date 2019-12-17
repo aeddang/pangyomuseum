@@ -9,6 +9,9 @@ class SettingPreference(context: Context) : CachedPreference(context, Preference
         private const val VIEW_GUIDE = "viewGuide"
         private const val VIEW_GESTURE = "viewGesture"
         private const val VIEW_SCAN_GUIDE = "viewScanGuide"
+        private const val VIEW_MAP_GUIDE = "viewMapGuide"
+
+        private const val IS_FIND = "isFind"
     }
 
     fun putViewGuide(bool: Boolean) = put(VIEW_GUIDE, bool)
@@ -19,4 +22,10 @@ class SettingPreference(context: Context) : CachedPreference(context, Preference
 
     fun putViewScanGuide(bool: Boolean) = put(VIEW_SCAN_GUIDE, bool)
     fun getViewScanGuide(): Boolean = get(VIEW_SCAN_GUIDE, false) as Boolean
+
+    fun putViewMapGuide(bool: Boolean) = put(VIEW_MAP_GUIDE, bool)
+    fun getViewMapGuide(): Boolean = get(VIEW_MAP_GUIDE, false) as Boolean
+
+    fun putIsFind(bool: Boolean, id:String) = put("$IS_FIND$id", bool)
+    fun getIsFind(id:String): Boolean = get("$IS_FIND$id", false) as Boolean
 }

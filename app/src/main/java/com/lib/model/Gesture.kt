@@ -2,11 +2,14 @@ package com.lib.model
 
 import android.graphics.Point
 import android.view.MotionEvent
+import com.google.android.exoplayer2.util.Log
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.abs
+import kotlin.math.floor
 
 class Gesture(var delegate: Delegate?, private val isVertical: Boolean, private val isHorizontal: Boolean) {
-
+    private val appTag = javaClass.simpleName
     enum class Type {
         NONE,START,END,CANCEL,
         MOVE,MOVE_V,MOVE_H,
@@ -71,7 +74,7 @@ class Gesture(var delegate: Delegate?, private val isVertical: Boolean, private 
         for (i in 0 until event.pointerCount) {
             mActivePointerId = event.getPointerId(i)
             pointerIndex = event.findPointerIndex(mActivePointerId)
-            location = Point(Math.floor(event.getX(pointerIndex).toDouble()).toInt(), Math.floor(event.getY(pointerIndex).toDouble()).toInt())
+            location = Point(floor(event.getX(pointerIndex).toDouble()).toInt(), floor(event.getY(pointerIndex).toDouble()).toInt())
             locations.add(location)
 
         }
@@ -127,30 +130,31 @@ class Gesture(var delegate: Delegate?, private val isVertical: Boolean, private 
                 change = changePosA[i]
                 change.x = location.x - start.x
                 change.y = location.y - start.y
-
+                //Log.d(appTag,"start.x "+start.x+" -  start.y "+start.y )
             }
             change = changePosA[0]
+
             //Log.d(appTag,"change.x "+change.x+" -  change.y "+change.y )
-            if (Math.abs(change.x) > Math.abs(change.y)) {
+            if (abs(change.x) >abs(change.y)) {
                 if (isHorizontal) trigger = Math.abs(change.x) <= moveMin
                 if (moveType != MoveType.HORIZONTAL) {
                     moveType = MoveType.HORIZONTAL
-                    startPosA = locations
+                    //startPosA = locations
                 }
                 if (isHorizontal && len == 1) delegate?.stateChange(this,
                     Type.MOVE_H
                 )
-            } else if (Math.abs(change.y) > Math.abs(change.x)) {
-                if (isVertical) trigger = Math.abs(change.y) <= moveMin
+            } else if (abs(change.y) >abs(change.x)) {
+                if (isVertical) trigger = abs(change.y) <= moveMin
                 if (moveType != MoveType.VERTICAL) {
                     moveType = MoveType.VERTICAL
-                    startPosA = locations
+                    //startPosA = locations
                 }
                 if (isVertical && len == 1) delegate?.stateChange(this,
                     Type.MOVE_V
                 )
             }
-            if(trigger) startPosA = locations
+            //if(trigger) startPosA = locations
             delegate?.stateChange(this, Type.MOVE)
         }
         else {
@@ -288,7 +292,7 @@ class Gesture(var delegate: Delegate?, private val isVertical: Boolean, private 
                 }
             }
             else {
-                if (Math.abs(dist) > changeMin) delegate?.pinchChange(this, dist)
+                if (Math.abs(dist) > 1.0f) delegate?.pinchChange(this, dist)
                 else delegate?.stateChange(this,
                     Type.PINCH_MOVE
                 )

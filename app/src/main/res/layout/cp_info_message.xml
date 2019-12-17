@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
     <ImageView
         android:id="@+id/bg"
@@ -23,7 +24,7 @@
             android:scaleType="fitCenter"
             android:src="@drawable/icon_marker" />
 
-        <TextView
+        <com.skeleton.view.textview.OutlineTextView
             android:id="@+id/text"
             style="@style/font_medium"
             android:layout_width="wrap_content"
@@ -35,7 +36,10 @@
             android:layout_weight="1"
             android:text="dsadsdsdsdzdvdsvdvdsvdsvdvdvdvdvdvdevdvdvdvdvdvdvdcvfdsvdvdvdvdsvdsvdvdvdvdvdv"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/font_bold" />
+            android:textSize="@dimen/font_bold"
+            app:textStroke="true"
+            app:textStrokeColor="@color/colorBlack"
+            app:textStrokeWidth="1dp"/>
 
         <ImageButton
             android:id="@+id/btnClose"

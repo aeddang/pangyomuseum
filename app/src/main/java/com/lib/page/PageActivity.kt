@@ -42,8 +42,12 @@ abstract class PageActivity<T> : AppCompatActivity(), View<T>, Page, PageDelegat
     protected open fun getSharedChange():Any { return ChangeBounds() }
 
     protected var currentPage: T? = null
-    protected var currentPageParam: Map<String, Any>? = null
-    private val historys = Stack< Pair< T, Map< String, Any >? >> ()
+    protected var currentTopPage: T? = null
+    get() {
+        return if( popups.isEmpty() ) currentPage else popups.last()
+    }
+    protected var currentPageParam: Map<String, Any?>? = null
+    private val historys = Stack< Pair< T, Map< String, Any? >? >> ()
     private val popups = ArrayList<T>()
 
     @SuppressLint("UseSparseArrays")
@@ -138,7 +142,7 @@ abstract class PageActivity<T> : AppCompatActivity(), View<T>, Page, PageDelegat
         return this.applicationContext
     }
 
-    override fun getPrevPage(): Pair<T, Map<String, Any>?>? {
+    override fun getPrevPage(): Pair<T, Map<String, Any?>?>? {
         if(historys.isEmpty()) return null
         return historys.peek()
     }
@@ -234,7 +238,7 @@ abstract class PageActivity<T> : AppCompatActivity(), View<T>, Page, PageDelegat
     }
 
     protected open fun onBackPressedAction() {
-        var backPage:Pair< T, Map< String, Any >? >? = null
+        var backPage:Pair< T, Map< String, Any? >? >? = null
         if( historys.isEmpty()) {
             if(currentPage == null){
                 onExitAction()
@@ -262,7 +266,7 @@ abstract class PageActivity<T> : AppCompatActivity(), View<T>, Page, PageDelegat
         return transitionName
     }
 
-    private fun getWillChangePageFragment(id:T, param:Map<String, Any>?, isPopup:Boolean): PageFragment {
+    private fun getWillChangePageFragment(id:T, param:Map<String, Any?>?, isPopup:Boolean): PageFragment {
         onWillChangePageFragment(id, param, isPopup)
         val isBackStack = pagePresenter.model.isBackStack(id)
         if( isBackStack ) {
@@ -279,17 +283,17 @@ abstract class PageActivity<T> : AppCompatActivity(), View<T>, Page, PageDelegat
         return newFragment
     }
 
-    protected open fun isChangePageAble(id:T, param:Map<String, Any>?, isPopup:Boolean):Boolean { return true }
-    protected open fun onWillChangePageFragment(id:T, param:Map<String, Any>?, isPopup:Boolean) {}
+    protected open fun isChangePageAble(id:T, param:Map<String, Any?>?, isPopup:Boolean):Boolean { return true }
+    protected open fun onWillChangePageFragment(id:T, param:Map<String, Any?>?, isPopup:Boolean) {}
     protected open fun isChangedCategory(prevId:T?, currentId:T?):Boolean = false
 
     abstract fun getPageByID(id:T): PageFragment
     final override fun onPageStart(id:T) { pageChange(id, null, true) }
-    final override fun onPageChange(id:T, param:Map<String, Any>?, sharedElement: android.view.View?,  transitionName:String?) {
+    final override fun onPageChange(id:T, param:Map<String, Any?>?, sharedElement: android.view.View?,  transitionName:String?) {
         pageChange(id, param, false, sharedElement,  transitionName )
     }
 
-    private fun pageChange(id:T, param:Map<String, Any>? , isStart:Boolean = false, sharedElement: android.view.View? = null, transitionName:String? = null, isBack:Boolean = false) {
+    private fun pageChange(id:T, param:Map<String, Any?>? , isStart:Boolean = false, sharedElement: android.view.View? = null, transitionName:String? = null, isBack:Boolean = false) {
         if( !isChangePageAble(id, param, false) ) return
         if(currentPage == id) {
             if(param == null){
@@ -345,7 +349,7 @@ abstract class PageActivity<T> : AppCompatActivity(), View<T>, Page, PageDelegat
     abstract fun getPopupByID(id:T): PageFragment
     private var currentAddedPopup:T? = null
     private var finalOpenPopupTime:Long = 0L
-    final override fun onOpenPopup(id:T, param:Map<String, Any>?, sharedElement: android.view.View?, transitionName:String?) {
+    final override fun onOpenPopup(id:T, param:Map<String, Any?>?, sharedElement: android.view.View?, transitionName:String?) {
 
         if( !isChangePageAble(id, param, true) ) return
         val cTime =  Date().time

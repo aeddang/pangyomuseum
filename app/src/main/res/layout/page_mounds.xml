@@ -6,8 +6,8 @@
     android:keepScreenOn="true"
     android:background="@color/colorBlack">
 
-    <com.google.ar.sceneform.SceneView
-        android:id="@+id/sceneView"
+    <com.enoughmedia.pangyomuseum.component.SceneViewBox
+        android:id="@+id/sceneViewBox"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBlack"
@@ -43,6 +43,11 @@
         android:layout_marginBottom="@dimen/margin_regular"
         android:layout_marginRight="@dimen/margin_regular"
         app:srcCompat="@drawable/btn_pano" />
+    <com.enoughmedia.pangyomuseum.component.InfoBox
+        android:id="@+id/infoBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"/>
 
     <com.enoughmedia.pangyomuseum.component.InfoMessage
         android:id="@+id/infoMessage"

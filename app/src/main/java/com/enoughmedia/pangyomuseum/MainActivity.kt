@@ -26,11 +26,21 @@ class MainActivity :PageActivity<PageID>(), Rx {
     }
 
 
-    override fun onWillChangePageFragment(id: PageID, param: Map<String, Any>?, isPopup: Boolean) {
+    override fun onWillChangePageFragment(id: PageID, param: Map<String, Any?>?, isPopup: Boolean) {
         loaded()
         val isFullScreen = PageFactory.getInstance().isFullScreenPage(id)
         if (isFullScreen) CommonUtil.enterFullScreenMode(this)
         else CommonUtil.enterDefaultMode(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        currentTopPage?.let {
+            val isFullScreen = PageFactory.getInstance().isFullScreenPage(it)
+            if (isFullScreen) CommonUtil.enterFullScreenMode(this)
+            else CommonUtil.enterDefaultMode(this)
+        }
+
     }
 
     override fun getPageByID(id: PageID): PageFragment {

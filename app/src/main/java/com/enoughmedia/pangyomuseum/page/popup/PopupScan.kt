@@ -3,6 +3,7 @@ package com.enoughmedia.pangyomuseum.page.popup
 import android.graphics.Bitmap
 import android.os.Bundle
 import com.enoughmedia.pangyomuseum.PageID
+import com.enoughmedia.pangyomuseum.PageParam
 import com.enoughmedia.pangyomuseum.R
 import com.enoughmedia.pangyomuseum.component.InfoMessage
 import com.enoughmedia.pangyomuseum.component.scan
@@ -73,7 +74,10 @@ class PopupScan  : RxPageFragment() {
         findObservable = PublishSubject.create<Mounds>()
         findObservable!!.observeOn(AndroidSchedulers.mainThread()).subscribe {
             findObservable = null
-            PagePresenter.getInstance<PageID>().pageChange(PageID.MOUNDS)
+
+            val param = HashMap<String, String>()
+            param[PageParam.MOUNDS_ID] = it.id
+            PagePresenter.getInstance<PageID>().pageChange(PageID.MOUNDS, param)
         }.apply { disposables.add(this) }
     }
 
@@ -89,7 +93,7 @@ class PopupScan  : RxPageFragment() {
             Log.i(appTag, "result ${result.text}")
             val find = findCodes.find { it == result.text }
             find?.let { f->
-                val mounds = museum.getMound(f)
+                val mounds = museum.getMoundByCode(f)
                 mounds?.let { findObservable?.onNext(it) }
             }
 

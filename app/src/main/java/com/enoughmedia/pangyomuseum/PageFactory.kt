@@ -1,9 +1,6 @@
 package com.enoughmedia.pangyomuseum
 import android.content.pm.ActivityInfo
-import com.enoughmedia.pangyomuseum.page.PageIntro
-import com.enoughmedia.pangyomuseum.page.PageMain
-import com.enoughmedia.pangyomuseum.page.PageMap
-import com.enoughmedia.pangyomuseum.page.PageMounds
+import com.enoughmedia.pangyomuseum.page.*
 import com.enoughmedia.pangyomuseum.page.popup.*
 
 import com.lib.page.PageFragment
@@ -46,7 +43,8 @@ class PageFactory {
     val backStackPages: Array<PageID> = arrayOf()
 
 
-    private val fullScreenPage: Array<PageID> = arrayOf(PageID.POPUP_SCAN,PageID.INTRO, PageID.POPUP_GESTURE, PageID.MOUNDS)
+    private val fullScreenPage: Array<PageID> = arrayOf(PageID.POPUP_SCAN,
+        PageID.INTRO, PageID.POPUP_GESTURE, PageID.MOUNDS, PageID.BOOK, PageID.POPUP_AR, PageID.POPUP_VR)
 
     fun isFullScreenPage(id: PageID): Boolean {
         return fullScreenPage.indexOf(id) != - 1
@@ -67,6 +65,7 @@ class PageFactory {
             PageID.INTRO -> PageIntro()
             PageID.MAP -> PageMap()
             PageID.MOUNDS -> PageMounds()
+            PageID.BOOK -> PageBook()
             PageID.POPUP_AR -> PopupAR()
             PageID.POPUP_VR -> PopupVR()
             PageID.POPUP_SCAN -> PopupScan()
@@ -88,6 +87,8 @@ enum class PageID(val resId: Int, override var position: Int = 9999) : PagePosit
     INTRO(0,0),
     MAP(1, 100),
     MOUNDS(2, 200),
+    BOOK(3, 300),
+
     POPUP_AR(1001),
     POPUP_VR(1002),
     POPUP_SCAN(1003),

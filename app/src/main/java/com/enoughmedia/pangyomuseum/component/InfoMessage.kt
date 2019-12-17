@@ -78,7 +78,7 @@ class InfoMessage: RxLinearLayout {
         }
         text.text = msg
         btnClose.visibility = View.VISIBLE
-        if(duration != -1L) autoClose(duration)
+        if(duration > -1L) autoClose(duration)
 
 
     }

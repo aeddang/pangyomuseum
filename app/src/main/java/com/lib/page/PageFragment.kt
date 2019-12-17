@@ -104,7 +104,7 @@ abstract class PageFragment: Fragment(), Page,  ViewTreeObserver.OnGlobalLayoutL
     override fun onPageEvent(id:Any?, type:String, data:Any? ){}
     override fun onPageAdded(id:Any?){}
     override fun onPageRemoved(id:Any?){}
-    open fun setParam(param:Map<String,Any>):PageFragment { return this }
+    open fun setParam(param:Map<String,Any?>):PageFragment { return this }
     open fun isBackAble():Boolean { return true }
 
     private var shadowUi:View? = null

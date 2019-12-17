@@ -5,7 +5,7 @@ import com.dagger.module.view.ActivityModule
 import com.dagger.module.view.MainActivityModule
 import com.dagger.module.view.PageModule
 import com.enoughmedia.pangyomuseum.MainActivity
-import com.enoughmedia.pangyomuseum.page.PageMain
+import com.enoughmedia.pangyomuseum.page.PageBook
 import com.enoughmedia.pangyomuseum.page.PageMap
 import com.enoughmedia.pangyomuseum.page.PageMounds
 import com.enoughmedia.pangyomuseum.page.popup.*
@@ -24,11 +24,6 @@ internal abstract class AndroidBindingModule {
     @ContributesAndroidInjector(modules = [MainActivityModule::class, ActivityModule::class])
     internal abstract fun bindMainActivity(): MainActivity
 
-
-    @PageScope
-    @ContributesAndroidInjector(modules = [PageModule::class])
-    internal abstract fun bindPageMain(): PageMain
-
     @PageScope
     @ContributesAndroidInjector(modules = [PageModule::class])
     internal abstract fun bindPageMap(): PageMap
@@ -36,6 +31,10 @@ internal abstract class AndroidBindingModule {
     @PageScope
     @ContributesAndroidInjector(modules = [PageModule::class])
     internal abstract fun bindPageMounds(): PageMounds
+
+    @PageScope
+    @ContributesAndroidInjector(modules = [PageModule::class])
+    internal abstract fun bindPageBook(): PageBook
 
     @PageScope
     @ContributesAndroidInjector(modules = [PageModule::class])

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
+import com.enoughmedia.pangyomuseum.AppConst
 import com.enoughmedia.pangyomuseum.PageID
 import com.enoughmedia.pangyomuseum.R
 import com.enoughmedia.pangyomuseum.store.SettingPreference
@@ -72,7 +73,7 @@ class ItemGuide : ListItem {
     override fun setData(data: Any?, idx:Int){
 
         num.text = "0${(idx+1)}"
-        val packageID = context.packageName
+        val packageID = AppConst.PACKAGE_NAME
         val resImgID = context.resources.getIdentifier("${packageID}:drawable/icon_step${(idx)}", null, null)
         val resTextID = context.resources.getIdentifier("${packageID}:string/popup_guide_text${(idx)}", null, null)
         image.setImageResource(resImgID)

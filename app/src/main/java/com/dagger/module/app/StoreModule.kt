@@ -1,9 +1,12 @@
 package com.dagger.module.app
 
+import android.content.Context
 import com.enoughmedia.pangyomuseum.store.Museum
+import com.enoughmedia.pangyomuseum.store.SettingPreference
 
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -12,8 +15,6 @@ class StoreModule {
 
     @Provides
     @Singleton
-    fun provideMuseum(): Museum = Museum()
-
-
+    fun provideMuseum(@Named("appContext") ctx: Context, setting: SettingPreference): Museum = Museum(ctx,setting)
 
 }

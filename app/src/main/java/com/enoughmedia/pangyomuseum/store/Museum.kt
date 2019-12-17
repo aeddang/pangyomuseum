@@ -1,17 +1,20 @@
 package com.enoughmedia.pangyomuseum.store
 
+import android.content.Context
 import com.enoughmedia.pangyomuseum.model.Antiquity
 import com.enoughmedia.pangyomuseum.model.Mounds
+import com.enoughmedia.pangyomuseum.model.MoundsID
 
-class Museum(){
+
+class Museum(val ctx: Context, val setting:SettingPreference){
 
     val mounds = arrayListOf<Mounds>(
-        Mounds("0", 0, 0),
-        Mounds("1", 1, 1),
-        Mounds("2", 2, 2),
-        Mounds("3", 3, 3),
-        Mounds("4", 4, 4),
-        Mounds("5", 5, 5)
+        Mounds(ctx, setting,"0", 0, 0),
+        Mounds(ctx, setting,"1", 1, 1),
+        Mounds(ctx, setting,"2", 2, 2),
+        Mounds(ctx, setting,"3", 3, 3),
+        Mounds(ctx, setting,"4", 4, 4),
+        Mounds(ctx, setting,"5", 5, 5)
     )
 
     val keys =  arrayOf(
@@ -28,6 +31,8 @@ class Museum(){
             keys[index].forEach {
                 mound.addAntiquity(
                     Antiquity(
+                        ctx,
+                        setting,
                         it
                     )
                 )
@@ -40,11 +45,25 @@ class Museum(){
         return mounds.map { it.findCode }
     }
 
-    fun getMound(code:String):Mounds?{
+    fun getMoundByCode(code:String):Mounds?{
         return mounds.find { it.findCode == code }
     }
 
+    fun getMound(id:MoundsID?):Mounds?{
+        if(id == null) return null
+        return mounds.find { it.id == id }
+    }
 
+    fun getMound(idx:Int):Mounds?{
+        return mounds[idx]
+    }
 
+    fun getFindAntiquities():List<Antiquity>{
+        return mounds.flatMap { m -> m.antiquitise.filter { it.isFind }.map{ it } }
+    }
+
+    fun allAntiquities():List<Antiquity>{
+        return mounds.flatMap { it.antiquitise }
+    }
 
 }

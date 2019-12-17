@@ -4,11 +4,9 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
 import com.enoughmedia.pangyomuseum.PageID
 import com.enoughmedia.pangyomuseum.R
-import com.enoughmedia.pangyomuseum.component.InfoMessage
 import com.enoughmedia.pangyomuseum.page.viewmodel.PageViewModel
 import com.jakewharton.rxbinding3.view.clicks
 import com.lib.page.PagePresenter
-import com.skeleton.module.ImageFactory
 import com.skeleton.module.ViewModelFactory
 import com.skeleton.rx.RxPageFragment
 import dagger.android.support.AndroidSupportInjection
@@ -39,16 +37,22 @@ class PageMap  : RxPageFragment() {
 
     override fun onTransactionCompleted() {
         super.onTransactionCompleted()
-        if( !viewModel.repo.setting.getViewGuide() ){
-            PagePresenter.getInstance<PageID>().openPopup(PageID.POPUP_GUIDE)
+        if( !viewModel.repo.setting.getViewGuide() ) PagePresenter.getInstance<PageID>().openPopup(PageID.POPUP_GUIDE)
+        if( !viewModel.repo.setting.getViewMapGuide() ) {
+            infoMessage.viewMessage(R.string.page_map_camera_guide)
+            viewModel.repo.setting.putViewMapGuide(true)
         }
-        infoMessage.viewMessage(R.string.page_map_camera_guide)
+
     }
 
     override fun onSubscribe() {
         super.onSubscribe()
         btnGuide.clicks().subscribe {
             PagePresenter.getInstance<PageID>().openPopup(PageID.POPUP_GUIDE)
+        }.apply { disposables.add(this) }
+
+        btnBook.clicks().subscribe {
+            PagePresenter.getInstance<PageID>().pageChange(PageID.BOOK)
         }.apply { disposables.add(this) }
 
         btnCamera.btn.clicks().subscribe {
