@@ -313,29 +313,42 @@ abstract class PageActivity<T> : AppCompatActivity(), View<T>, Page, PageDelegat
         val willChangePage = getWillChangePageFragment(id, param, false)
         if(isChangedCategory(currentPage, id)) willChangePage.onCategoryChanged(currentPage)
         willChangePage.setOnPageEvent( this )
-        val transaction = supportFragmentManager.beginTransaction()
-        if(isStart) {
-            transaction.setCustomAnimations(getPageStart(),getPageOut(false))
-        } else {
-            if(sharedElement == null) {
-                var isReverse = isBack
-                var currentPos = 9999
-                val pos = id as? PagePosition
-                pos?.let { currentPos = it.position }
-                currentPage?.let {
-                    val prevPos = it as? PagePosition
-                    prevPos?.let { pp -> isReverse = pp.position > currentPos }
+
+        try {
+            val transaction = supportFragmentManager.beginTransaction()
+            if (isStart) {
+                transaction.setCustomAnimations(getPageStart(), getPageOut(false))
+            } else {
+                if (sharedElement == null) {
+                    var isReverse = isBack
+                    var currentPos = 9999
+                    val pos = id as? PagePosition
+                    pos?.let { currentPos = it.position }
+                    currentPage?.let {
+                        val prevPos = it as? PagePosition
+                        prevPos?.let { pp -> isReverse = pp.position > currentPos }
+                    }
+                    transaction.setCustomAnimations(getPageIn(isReverse), getPageOut(isReverse))
+                } else {
+                    transaction.setReorderingAllowed(true)
+                    transitionName?.let {
+                        transaction.addSharedElement(
+                            sharedElement,
+                            getSharedTransitionName(sharedElement, it)
+                        )
+                    }
+                    willChangePage.sharedElementEnterTransition = getSharedChange()
                 }
-                transaction.setCustomAnimations(getPageIn(isReverse),getPageOut(isReverse))
-            }else {
-                transaction.setReorderingAllowed(true)
-                transitionName?.let { transaction.addSharedElement(sharedElement, getSharedTransitionName(sharedElement,it)) }
-                willChangePage.sharedElementEnterTransition = getSharedChange()
             }
-        }
-        currentPage?.let { if( pagePresenter.model.isBackStack(it) ) transaction.addToBackStack(it.toString()) }
-        transaction.replace(getPageAreaId(), willChangePage, id.toString())
-        transaction.commit()
+            currentPage?.let {
+                if (pagePresenter.model.isBackStack(it)) transaction.addToBackStack(
+                    it.toString()
+                )
+            }
+            transaction.replace(getPageAreaId(), willChangePage, id.toString())
+            transaction.commit()
+        }catch(e:IllegalStateException){ }
+
         if( !isBack ) {
             currentPage?.let {
                 if( pagePresenter.model.isHistory(it) ) historys.push(Pair(it, currentPageParam))
@@ -359,20 +372,24 @@ abstract class PageActivity<T> : AppCompatActivity(), View<T>, Page, PageDelegat
         resetBackPressedAction()
         val popup = getWillChangePageFragment(id, param, true)
         popup.setOnPageEvent( this )
-        val transaction = supportFragmentManager.beginTransaction()
-        if(sharedElement == null) {
-            transaction.setCustomAnimations(getPopupIn(), getPopupOut())
-        }else {
-            transaction.setReorderingAllowed(true)
-            transitionName?.let { transaction.addSharedElement(sharedElement, getSharedTransitionName(sharedElement,it)) }
-            popup.sharedElementEnterTransition = getSharedChange()
-            getCurrentPageFragment()?.let { transaction.hide(it) }
-        }
-        transaction.add(getPageAreaId(), popup, id.toString())
-        transaction.commit()
-        if(sharedElement != null) {
-            getCurrentPageFragment()?.let { supportFragmentManager.beginTransaction().show(it).commit()}
-        }
+        try{
+
+            val transaction = supportFragmentManager.beginTransaction()
+            if(sharedElement == null) {
+                transaction.setCustomAnimations(getPopupIn(), getPopupOut())
+            }else {
+                transaction.setReorderingAllowed(true)
+                transitionName?.let { transaction.addSharedElement(sharedElement, getSharedTransitionName(sharedElement,it)) }
+                popup.sharedElementEnterTransition = getSharedChange()
+                getCurrentPageFragment()?.let { transaction.hide(it) }
+            }
+            transaction.add(getPageAreaId(), popup, id.toString())
+            transaction.commit()
+            if(sharedElement != null) {
+                getCurrentPageFragment()?.let { supportFragmentManager.beginTransaction().show(it).commit()}
+            }
+        } catch(e:IllegalStateException){ }
+
         popups.add(id)
     }
 
@@ -415,23 +432,27 @@ abstract class PageActivity<T> : AppCompatActivity(), View<T>, Page, PageDelegat
 
     @CallSuper
     override fun onCloseAllPopup(isAni:Boolean) {
-        val transaction = supportFragmentManager.beginTransaction()
-        popups.forEach { p ->
-            getPageFragment(p)?.let {f->
-                if( pagePresenter.model.isBackStack(p) ) transaction.addToBackStack(p.toString() )
-                if(isAni) transaction.setCustomAnimations(getPopupIn(), getPopupOut())
-                transaction.remove(f)
+        try {
+            val transaction = supportFragmentManager.beginTransaction()
+            popups.forEach { p ->
+                getPageFragment(p)?.let { f ->
+                    if (pagePresenter.model.isBackStack(p)) transaction.addToBackStack(p.toString())
+                    if (isAni) transaction.setCustomAnimations(getPopupIn(), getPopupOut())
+                    transaction.remove(f)
+                }
             }
-        }
-        transaction.commitNow()
+            transaction.commitNow()
+        }catch(e:IllegalStateException){ }
         popups.clear()
     }
 
     private fun closePopup(pop: Fragment, id:T? = null, isAni:Boolean = true){
-        val transaction = supportFragmentManager.beginTransaction()
-        id?.let { if( pagePresenter.model.isBackStack(it) )  transaction.addToBackStack(it.toString()) }
-        if(isAni) transaction.setCustomAnimations(getPopupIn(), getPopupOut())
-        transaction.remove(pop).commitNow()
+        try{
+            val transaction = supportFragmentManager.beginTransaction()
+            id?.let { if( pagePresenter.model.isBackStack(it) )  transaction.addToBackStack(it.toString()) }
+            if(isAni) transaction.setCustomAnimations(getPopupIn(), getPopupOut())
+            transaction.remove(pop).commitNow()
+        } catch(e:IllegalStateException){ }
     }
 
     fun goStore(){

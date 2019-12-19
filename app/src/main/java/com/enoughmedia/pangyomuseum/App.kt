@@ -6,6 +6,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import org.altbeacon.beacon.powersave.BackgroundPowerSaver
 import javax.inject.Inject
 
 
@@ -24,7 +25,10 @@ class App : DaggerApplication(), HasSupportFragmentInjector {
         return fragmentInjector
     }
 
+
+    private var backgroundPowerSaver: BackgroundPowerSaver? = null
     override fun onCreate() {
         super.onCreate()
+        backgroundPowerSaver = BackgroundPowerSaver(this)
     }
 }

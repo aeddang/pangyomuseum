@@ -5,7 +5,7 @@ object AppConst {
 }
 
 object PreferenceName{
-    const val SETTING: String = "pref_setting_v01"
+    const val SETTING: String = "pref_setting_v02"
 }
 
 
@@ -15,4 +15,5 @@ object PageParam {
     const val MOUNDS = "mounds"
     const val ANTIQUITY = "antiquity"
     const val VIEW_TYPE = "viewType"
+    const val SHARE_IMAGE_ID = "shareImageID"
 }

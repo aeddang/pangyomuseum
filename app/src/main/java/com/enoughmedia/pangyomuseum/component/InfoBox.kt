@@ -2,6 +2,7 @@ package com.enoughmedia.pangyomuseum.component
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import com.enoughmedia.pangyomuseum.R

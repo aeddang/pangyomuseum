@@ -1,6 +1,7 @@
 package com.dagger.module.app
 
 import android.content.Context
+import com.enoughmedia.pangyomuseum.store.BeaconController
 import com.enoughmedia.pangyomuseum.store.Museum
 import com.enoughmedia.pangyomuseum.store.SettingPreference
 
@@ -16,5 +17,9 @@ class StoreModule {
     @Provides
     @Singleton
     fun provideMuseum(@Named("appContext") ctx: Context, setting: SettingPreference): Museum = Museum(ctx,setting)
+
+    @Provides
+    @Singleton
+    fun provideBeaconController(@Named("appContext") ctx: Context): BeaconController = BeaconController(ctx)
 
 }

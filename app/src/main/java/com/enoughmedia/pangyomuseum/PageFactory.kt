@@ -47,7 +47,7 @@ class PageFactory {
         PageID.INTRO, PageID.POPUP_GESTURE, PageID.MOUNDS, PageID.BOOK, PageID.POPUP_AR, PageID.POPUP_VR)
 
     fun isFullScreenPage(id: PageID): Boolean {
-        return fullScreenPage.indexOf(id) != - 1
+        return true
     }
 
 

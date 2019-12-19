@@ -30,15 +30,21 @@ class OpenCamera: RxFrameLayout {
     }
 
     fun onResume(){
-        effectOn()
+
     }
 
     fun onPause(){
-        effectDisposable?.dispose()
+        effectOff()
     }
 
     private var isFind = false
     private var effectDisposable: Disposable? = null
+
+    fun effectOff() {
+        effectDisposable?.dispose()
+        effectDefault.animateAlpha(0.0f, false, AnimationDuration.SHORT)
+        effectFind.animateAlpha(0.0f, false, AnimationDuration.SHORT)
+    }
 
     fun effectOn(isFind:Boolean = this.isFind) {
         this.isFind = isFind

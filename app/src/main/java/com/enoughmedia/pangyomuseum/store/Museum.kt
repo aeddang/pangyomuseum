@@ -49,6 +49,10 @@ class Museum(val ctx: Context, val setting:SettingPreference){
         return mounds.find { it.findCode == code }
     }
 
+    fun getMoundByBeacon(id:String?):Mounds?{
+        return mounds.find { it.findBeaconID == id }
+    }
+
     fun getMound(id:MoundsID?):Mounds?{
         if(id == null) return null
         return mounds.find { it.id == id }

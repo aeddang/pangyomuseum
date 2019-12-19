@@ -19,7 +19,7 @@
     <dimen name="margin_thin">10dp</dimen>
     <dimen name="margin_extra_thin">5dp</dimen>
 
-    <dimen name="margin_header">30dp</dimen>
-    <dimen name="margin_navi">30dp</dimen>
+    <dimen name="margin_header">0dp</dimen>
+    <dimen name="margin_navi">0dp</dimen>
 
 </resources>

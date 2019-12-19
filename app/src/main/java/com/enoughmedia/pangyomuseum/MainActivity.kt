@@ -1,7 +1,8 @@
 package com.enoughmedia.pangyomuseum
 
-import android.content.pm.ActivityInfo
 import android.view.View
+import androidx.annotation.StringRes
+import com.enoughmedia.pangyomuseum.component.InfoMessage
 import com.lib.page.PageActivity
 import com.lib.page.PageFragment
 import com.lib.page.PagePresenter
@@ -73,6 +74,12 @@ class MainActivity :PageActivity<PageID>(), Rx {
         //loadingBar.visibility = View.GONE
     }
 
+    fun viewMessage(msg:String, type: InfoMessage.Type = InfoMessage.Type.Default, duration:Long = -1L){
+        globalInfoMessage.viewMessage(msg, type, duration)
+    }
+    fun viewMessage(@StringRes resId: Int, type: InfoMessage.Type = InfoMessage.Type.Default, duration:Long = -1L){
+        globalInfoMessage.viewMessage(resId, type, duration)
+    }
 
     override fun getPageIn(isBack: Boolean): Int = if (isBack) R.anim.slide_in_left else R.anim.slide_in_right
     override fun getPageOut(isBack: Boolean): Int = if (isBack) R.anim.slide_out_right else R.anim.slide_out_left

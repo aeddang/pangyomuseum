@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.audio.AudioAttributes
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.metadata.Metadata
 import com.google.android.exoplayer2.metadata.MetadataOutput
 import com.google.android.exoplayer2.source.ExtractorMediaSource
@@ -17,10 +18,13 @@ import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.upstream.AssetDataSource
+import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.google.android.exoplayer2.video.VideoListener
+import com.google.android.exoplayer2.upstream.DataSource.Factory
 import com.lib.page.PagePresenter
 import com.lib.page.PageRequestPermission
 import com.lib.util.Log
@@ -157,6 +161,12 @@ abstract class ExoVideoPlayer :  RxFrameLayout,PlayBack, Player.EventListener, V
         }
     }
 
+    private fun bildAssetDataSource(uri: Uri): MediaSource {
+        val dataSourceFactory: Factory = Factory { AssetDataSource(context) }
+        return ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
+
+    }
+
     private fun buildDataSource(uri: Uri): MediaSource {
         val dataSourceFactory = DefaultDataSourceFactory(context, Util.getUserAgent(context, context?.getString( getAppName())))
         return ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
@@ -189,7 +199,9 @@ abstract class ExoVideoPlayer :  RxFrameLayout,PlayBack, Player.EventListener, V
         Log.d(appTag, "videoPath $videoPath initTime $initTime")
         sharedModel.videoPath = videoPath
         val uri = Uri.parse(videoPath)
-        val source:MediaSource = if( isDataSorce ) buildDataSource(uri) else buildMediaSource(uri)
+        val source:MediaSource = if( isDataSorce ) {
+            if(videoPath.indexOf("assets:///") == -1) buildDataSource(uri) else bildAssetDataSource(uri)
+        } else buildMediaSource(uri)
         isInit = false
         isCompleted = false
         sharedModel.source = source
@@ -301,6 +313,7 @@ abstract class ExoVideoPlayer :  RxFrameLayout,PlayBack, Player.EventListener, V
 
     @CallSuper
     override fun onPlayerError(error: ExoPlaybackException) {
+        Log.d(appTag, "onPlayerError ${error.message}")
         onError(error)
     }
 

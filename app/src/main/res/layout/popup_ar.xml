@@ -14,6 +14,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
             <ImageView
+                android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/bg_black"
@@ -21,7 +22,7 @@
                 android:scaleType="fitXY"/>
             <com.enoughmedia.pangyomuseum.component.SceneViewBox
                 android:id="@+id/sceneViewBox"
-                android:layout_margin="32dp"
+                android:layout_margin="34dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
@@ -92,4 +93,5 @@
         android:layout_marginTop="@dimen/margin_regular"
         android:layout_marginLeft="@dimen/margin_regular"
         android:src="@drawable/icon_360"/>
+
 </FrameLayout>

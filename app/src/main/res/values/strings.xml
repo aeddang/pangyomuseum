@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">antiquities</string>
     <string name="notice_app_exit">한번 더 누르면 종료됩니다</string>
+    <string name="notice_need_permission">권한승인을 하지않으면 일부기능을 사용 할 수 없습니다.</string>
+    <string name="notice_need_bluetooth">Bluetooth를 켜지않으면 일부기능을 사용 할 수 없습니다.</string>
 
     <string name="intro_loading">데이터를 불러오고 있습니다.</string>
 
@@ -8,6 +10,7 @@
     <string name="page_mounds_find_info">새로운 유물이\n도감에 수집되었습니다.</string>
 
     <string name="popup_scan_guide">마커 이미지를\n찾아 비춰보세요.</string>
+    <string name="popup_scan_find_info">발견!!!</string>
 
     <string name="page_book_title">유물 도감</string>
     <string name="page_book_find">찾은 유물</string>

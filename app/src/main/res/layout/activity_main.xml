@@ -19,5 +19,10 @@
         android:scaleType="fitXY"
         android:clickable="true"
         app:srcCompat="@color/transparent_black70" />
+    <com.enoughmedia.pangyomuseum.component.InfoMessage
+        android:id="@+id/globalInfoMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
 </FrameLayout>

@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBlack"
     android:clickable="true">
     <com.enoughmedia.pangyomuseum.component.ScanCamera
         android:id="@+id/camera"
@@ -23,6 +24,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-
     </LinearLayout>
+    <include
+        android:id="@+id/btnClose"
+        layout="@layout/btn_close"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="right|top"
+        android:layout_marginTop="@dimen/margin_regular"
+        android:layout_marginRight="@dimen/margin_regular" />
 </FrameLayout>

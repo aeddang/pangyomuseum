@@ -22,11 +22,19 @@ data class Mounds(
         antiquity.moundsID = id
         antiquitise.add(antiquity)
     }
-
+    val findBeaconID:String
+        get() {
+            return "beacon_${id}"
+        }
     val findCode:String
-    get() {
-        return "qrcode_${id}"
-    }
+        get() {
+            return "qrcode_${id}"
+        }
+    val introPath:String
+        get() {
+            return "assets:///videos/testRoom1_1920Mono.mp4"
+        }
+
     val panoViewPath:String
         get() {
             return "panoramas/testRoom1_2kStereo.jpg"

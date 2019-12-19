@@ -6,6 +6,7 @@ import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.*
 import androidx.annotation.RawRes
+import com.enoughmedia.pangyomuseum.MainActivity
 import com.enoughmedia.pangyomuseum.PageID
 import com.enoughmedia.pangyomuseum.PageParam
 import com.enoughmedia.pangyomuseum.R
@@ -15,18 +16,12 @@ import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.Scene
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
-import com.google.ar.sceneform.rendering.ExternalTexture
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.lib.model.Gesture
 import com.lib.page.PagePresenter
-import com.lib.util.AnimationDuration
 import com.lib.util.Log
 import com.skeleton.rx.RxFrameLayout
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.cp_scene_view_box.view.*
-import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
 
 
@@ -44,12 +39,9 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
 
     private var trigger:Boolean = true
     private lateinit var gesture: Gesture
-    private lateinit var texture:ExternalTexture
     var viewType:ViewType = ViewType.Node
 
     override fun onCreatedView() {
-
-        texture = ExternalTexture()
 
     }
 
@@ -189,6 +181,7 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
 
             sceneView.scene.addOnPeekTouchListener(
                 Scene.OnPeekTouchListener { result, event ->
+                    if( event.action != MotionEvent.ACTION_UP) return@OnPeekTouchListener
                     val node = result.node
                     node ?: return@OnPeekTouchListener
                     val anti = antiquities?.find { it.id == node.name }
@@ -202,9 +195,9 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
         parent?.let {
             val child = AnchorNode().apply {
                 setParent(sceneView.scene)
-                val tx = Math.random().toFloat() * 3.0f - 1.5f
-                val ty = Math.random().toFloat() * 3.0f - 1.5f
-                val tz = - Math.random().toFloat()
+                val tx = Math.random().toFloat() * 1.0f - 0.5f
+                val ty = Math.random().toFloat() * 1.0f - 0.5f
+                val tz = - (Math.random().toFloat() * 0.2f)
                 localPosition = Vector3(tx, ty, tz)
                 localScale = Vector3(finalScale, finalScale, finalScale)
                 name = id
@@ -219,20 +212,13 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
 
 
     private fun findAntiquity(anti:Antiquity){
-
-        if(anti.isFind){
-            openAntiquity(anti)
-        }else{
+        openAntiquity(anti)
+        if(!anti.isFind){
             anti.isFind = true
-            val duration = 3000L
-            infoMessage.viewMessage(R.string.page_mounds_find_info, InfoMessage.Type.Book, duration)
-            Observable.interval(duration, TimeUnit.MILLISECONDS)
-                .take(1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe {
-                    openAntiquity(anti)
-                }.apply { disposables?.add(this) }
+            val main = PagePresenter.getInstance<PageID>().activity as?  MainActivity?
+            main?.viewMessage(R.string.page_mounds_find_info, InfoMessage.Type.Book, 2000L)
         }
+
 
     }
 

@@ -16,8 +16,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.cp_info_message.view.*
 import kotlinx.android.synthetic.main.cp_info_message.view.text
-import kotlinx.android.synthetic.main.cp_open_camera.view.*
-import kotlinx.android.synthetic.main.item_quide.view.*
+
 import java.util.concurrent.TimeUnit
 
 
@@ -46,13 +45,18 @@ class InfoMessage: RxLinearLayout {
 
     override fun onSubscribe() {
         super.onSubscribe()
-        btnClose.clicks().subscribe {
+        btnOff.clicks().subscribe {
             this.animateAlpha(0.0f)
         }.apply { disposables?.add(this) }
     }
 
+    fun hideMessage(){
+        closeDisposable?.dispose()
+        animateAlpha(0.0f)
+    }
+
     fun viewMessage(@StringRes resId: Int, type:Type = Type.Default, duration:Long = -1L){
-        viewMessage(context.getString(resId, type, duration))
+        viewMessage(context.getString(resId), type, duration)
     }
     fun viewMessage(msg:String, type:Type = Type.Default, duration:Long = -1L){
         closeDisposable?.dispose()
@@ -77,7 +81,7 @@ class InfoMessage: RxLinearLayout {
             }
         }
         text.text = msg
-        btnClose.visibility = View.VISIBLE
+        btnOff.visibility = View.VISIBLE
         if(duration > -1L) autoClose(duration)
 
 
@@ -85,7 +89,7 @@ class InfoMessage: RxLinearLayout {
 
     private var closeDisposable: Disposable? = null
     private fun autoClose(duration:Long){
-        btnClose.visibility = View.GONE
+        btnOff.visibility = View.GONE
         Observable.interval(duration, TimeUnit.MILLISECONDS)
             .take(1)
             .subscribeOn(Schedulers.io())

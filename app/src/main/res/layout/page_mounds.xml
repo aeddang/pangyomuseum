@@ -9,10 +9,12 @@
     <com.enoughmedia.pangyomuseum.component.SceneViewBox
         android:id="@+id/sceneViewBox"
         android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <com.enoughmedia.pangyomuseum.component.IntroPlayer
+        android:id="@+id/player"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBlack"
         />
-
     <include
         android:id="@+id/btnClose"
         layout="@layout/btn_close"

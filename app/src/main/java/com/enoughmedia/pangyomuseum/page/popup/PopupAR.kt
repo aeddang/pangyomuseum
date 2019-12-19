@@ -1,6 +1,7 @@
 package com.enoughmedia.pangyomuseum.page.popup
 
 import android.os.Bundle
+import android.transition.ChangeBounds
 
 import com.enoughmedia.pangyomuseum.PageID
 import com.enoughmedia.pangyomuseum.PageParam
@@ -11,7 +12,10 @@ import com.lib.page.PageFragment
 import com.lib.page.PagePresenter
 import com.skeleton.rx.RxPageFragment
 import dagger.android.support.AndroidSupportInjection
+
 import kotlinx.android.synthetic.main.popup_ar.*
+import kotlinx.android.synthetic.main.popup_ar.btnClose
+import kotlinx.android.synthetic.main.popup_ar.sceneViewBox
 
 
 class PopupAR  : RxPageFragment() {
@@ -28,9 +32,11 @@ class PopupAR  : RxPageFragment() {
 
 
     private var antiquity:Antiquity? = null
+    private var shareImageID:String? = null
 
     override fun setParam(param: Map<String, Any?>): PageFragment {
         antiquity = param[PageParam.ANTIQUITY] as? Antiquity?
+        shareImageID = param[PageParam.SHARE_IMAGE_ID] as? String?
         return super.setParam(param)
     }
     override fun onCreatedView() {
@@ -41,6 +47,10 @@ class PopupAR  : RxPageFragment() {
             info.text = it.info
             desc.text = it.desc
             sceneViewBox.addRenderModel(it.modelResource)
+        }
+        shareImageID?.let {
+            sharedElementEnterTransition = ChangeBounds()
+            sceneViewBox.transitionName = it
         }
 
 
@@ -57,6 +67,7 @@ class PopupAR  : RxPageFragment() {
     override fun onResume() {
         super.onResume()
         sceneViewBox.onResume()
+
     }
 
     override fun onPause() {

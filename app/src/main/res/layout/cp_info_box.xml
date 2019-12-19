@@ -4,14 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
-    <ImageButton
-        android:id="@+id/btnOpen"
-        android:layout_width="32dp"
-        android:layout_height="23dp"
-        android:layout_gravity="top|center_horizontal"
-        android:background="@color/transparent"
-        android:scaleType="fitCenter"
-        android:src="@drawable/btn_down" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,4 +57,14 @@
             app:textStrokeColor="@color/colorBlack"
             app:textStrokeWidth="1dp"/>
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnOpen"
+        android:layout_width="52dp"
+        android:layout_height="43dp"
+        android:layout_gravity="top|center_horizontal"
+        android:background="@color/transparent"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/btn_down" />
 </FrameLayout>

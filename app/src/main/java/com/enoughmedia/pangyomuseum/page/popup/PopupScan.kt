@@ -2,6 +2,7 @@ package com.enoughmedia.pangyomuseum.page.popup
 
 import android.graphics.Bitmap
 import android.os.Bundle
+import com.enoughmedia.pangyomuseum.MainActivity
 import com.enoughmedia.pangyomuseum.PageID
 import com.enoughmedia.pangyomuseum.PageParam
 import com.enoughmedia.pangyomuseum.R
@@ -15,10 +16,10 @@ import com.google.zxing.LuminanceSource
 import com.google.zxing.RGBLuminanceSource
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
+import com.jakewharton.rxbinding3.view.clicks
 import com.lib.page.PagePresenter
 import com.lib.util.Log
 import com.skeleton.rx.RxPageFragment
-import com.skeleton.view.camera.init
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
@@ -74,10 +75,20 @@ class PopupScan  : RxPageFragment() {
         findObservable = PublishSubject.create<Mounds>()
         findObservable!!.observeOn(AndroidSchedulers.mainThread()).subscribe {
             findObservable = null
+            //val main = PagePresenter.getInstance<PageID>().activity as?  MainActivity?
+            //val msg = it.title + (context?.getString(R.string.popup_scan_find_info) ?: "")
+            //main?.viewMessage(msg, InfoMessage.Type.Find, 2000L)
 
             val param = HashMap<String, String>()
             param[PageParam.MOUNDS_ID] = it.id
             PagePresenter.getInstance<PageID>().pageChange(PageID.MOUNDS, param)
+
+
+
+        }.apply { disposables.add(this) }
+
+        btnClose.clicks().subscribe {
+            PagePresenter.getInstance<PageID>().goBack()
         }.apply { disposables.add(this) }
     }
 

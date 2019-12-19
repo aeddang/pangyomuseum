@@ -42,7 +42,7 @@
             app:textStrokeWidth="1dp"/>
 
         <ImageButton
-            android:id="@+id/btnClose"
+            android:id="@+id/btnOff"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="bottom|left"

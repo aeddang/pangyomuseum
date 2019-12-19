@@ -12,6 +12,7 @@ import com.enoughmedia.pangyomuseum.PageParam
 import com.enoughmedia.pangyomuseum.R
 import com.enoughmedia.pangyomuseum.model.Antiquity
 import com.enoughmedia.pangyomuseum.model.MoundsID
+import com.enoughmedia.pangyomuseum.page.popup.PopupAR
 import com.enoughmedia.pangyomuseum.page.viewmodel.PageViewModel
 import com.jakewharton.rxbinding3.view.clicks
 import com.lib.page.PageFragment
@@ -27,7 +28,10 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.item_antiquity.view.*
 import kotlinx.android.synthetic.main.page_book.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.math.floor
 import kotlin.math.roundToInt
 
@@ -184,8 +188,10 @@ class ItemAntiquity : RxFrameLayout, Rx {
         antiquity ?: return
         if(antiquity!!.isFind){
             this.clicks().subscribe {
+                val shareImageID = UUID.randomUUID().toString()
                 val param = HashMap<String, Any>()
                 param[PageParam.ANTIQUITY] = antiquity!!
+                //param[PageParam.SHARE_IMAGE_ID] = shareImageID
                 PagePresenter.getInstance<PageID>().openPopup(PageID.POPUP_AR, param)
 
             }.apply { disposables?.add(this) }
