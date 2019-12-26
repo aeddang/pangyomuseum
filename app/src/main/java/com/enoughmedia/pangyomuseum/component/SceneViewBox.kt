@@ -118,50 +118,65 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
     var deltaScale = finalScale
     var finalRotation  = PointF(0.0f,0.0f)
     var deltaRotation  = PointF(0.0f,0.0f)
-
+    var finalCameraPosition  = Vector3(0.0f,0.0f,0.0f)
     private fun touchReset() {
         finalRotation.x = deltaRotation.x
         finalRotation.y = deltaRotation.y
+        finalCameraPosition.x = sceneView.scene.camera.localPosition.x
+        finalCameraPosition.y = sceneView.scene.camera.localPosition.y
+        finalCameraPosition.z = sceneView.scene.camera.localPosition.z
         finalScale = deltaScale
     }
 
     private fun setCameraStart(){
-        deltaScale = 2f
+        deltaScale = -0.7f
         deltaRotation  = PointF(180.0f,-20f)
+
+        rotateCamera(deltaRotation.x, deltaRotation.y)
+        moveCamera(deltaScale)
         touchReset()
-        sceneView.scene.camera.localPosition = Vector3(0f,0f, - (finalScale - 1.0f) )
-        val h = Quaternion.axisAngle(Vector3.up(), finalRotation .x)
-        val v = Quaternion.axisAngle(Vector3.right(), finalRotation .y)
+
+    }
+    private fun moveCamera(delta:Float){
+        Log.i(appTag,"deltaScale ${deltaScale}")
+        val forword = sceneView.scene.camera.forward
+        val x = forword.x * delta + finalCameraPosition.x
+        val y = forword.y * delta + finalCameraPosition.y
+        val z = forword.z * delta + finalCameraPosition.z
+
+        sceneView.scene.camera.localPosition = Vector3(x,y,z)
+
+    }
+
+    private fun rotateCamera(deltaX:Float, deltaY:Float){
+        val h = Quaternion.axisAngle(Vector3.up(),deltaX)
+        val v = Quaternion.axisAngle(Vector3.right(),deltaY)
         val m = Quaternion.multiply(h,v)
-        sceneView.scene.camera.localRotation = m
+        when(viewType){
+            ViewType.Node -> node?.localRotation = m
+            ViewType.World -> sceneView.scene.camera.localRotation = m
+        }
+        deltaRotation.x = deltaX
+        deltaRotation.y = deltaY
     }
 
     override fun pinchChange(g: Gesture, dist: Float) {
         super.pinchChange(g, dist)
-        val d = if(viewType == ViewType.World) -dist else dist
-        deltaScale = finalScale + (d/scaleSensitivity)
-        Log.i(appTag, "deltaScale $deltaScale ")
-        val m = Vector3(deltaScale, deltaScale, deltaScale)
+        deltaScale = (dist/scaleSensitivity)
         when(viewType){
-            ViewType.Node -> node?.localScale = m
-            ViewType.World -> sceneView.scene.camera.localPosition = Vector3(0f,0f, - (deltaScale - 1.0f) )
+            ViewType.Node -> {
+                deltaScale += finalScale
+                val m = Vector3(deltaScale, deltaScale, deltaScale)
+                node?.localScale = m
+            }
+            ViewType.World -> moveCamera(deltaScale)
         }
     }
 
     private fun touchMove(deltaX:Int, deltaY:Int) {
         val mx = finalRotation.x + (deltaX.toFloat()/roteSensitivity)
         val my = finalRotation.y + (deltaY.toFloat()/roteSensitivity)
-        Log.i(appTag, "finalRotation ${finalRotation.x}  ${finalRotation.y} ")
-        Log.i(appTag, "deltaX ${deltaX}  ${deltaY} ")
-        val h = Quaternion.axisAngle(Vector3.up(), mx)
-        val v = Quaternion.axisAngle(Vector3.right(), my)
-        val m = Quaternion.multiply(h,v)
-        when(viewType){
-            ViewType.Node -> node?.localRotation = m
-            ViewType.World -> sceneView.scene.camera.localRotation = m
-        }
-        deltaRotation.x = mx
-        deltaRotation.y = my
+        rotateCamera(mx,my)
     }
 
 
