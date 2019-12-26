@@ -56,4 +56,8 @@ internal abstract class AndroidBindingModule {
     @ContributesAndroidInjector(modules = [PageModule::class])
     internal abstract fun bindPopupGesture(): PopupGesture
 
+    @PageScope
+    @ContributesAndroidInjector(modules = [PageModule::class])
+    internal abstract fun bindPopupSetting(): PopupSetting
+
 }

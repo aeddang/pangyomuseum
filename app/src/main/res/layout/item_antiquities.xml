@@ -18,69 +18,77 @@
                 android:id="@+id/antiquity0"
                 android:layout_width="176dp"
                 android:layout_height="160dp"
+                android:scaleType="fitCenter"
                 android:background="@drawable/bg_antiquity"
-                android:src="@drawable/z_antiquity0_0" />
+                android:src="@drawable/bg_antiquities" />
 
             <com.enoughmedia.pangyomuseum.page.ItemAntiquity
                 android:id="@+id/antiquity1"
                 android:layout_width="176dp"
                 android:layout_height="160dp"
-                android:layout_marginLeft="@dimen/margin_light"
+                android:layout_marginLeft="@dimen/margin_thin"
+                android:scaleType="fitCenter"
                 android:background="@drawable/bg_antiquity"
-                android:src="@drawable/z_antiquity0_0" />
+                android:src="@drawable/bg_antiquities" />
 
             <com.enoughmedia.pangyomuseum.page.ItemAntiquity
                 android:id="@+id/antiquity2"
                 android:layout_width="176dp"
                 android:layout_height="160dp"
-                android:layout_marginLeft="@dimen/margin_light"
+                android:layout_marginLeft="@dimen/margin_thin"
+                android:scaleType="fitCenter"
                 android:background="@drawable/bg_antiquity"
-                android:src="@drawable/z_antiquity0_0" />
+                android:src="@drawable/bg_antiquities" />
 
             <com.enoughmedia.pangyomuseum.page.ItemAntiquity
                 android:id="@+id/antiquity3"
                 android:layout_width="176dp"
                 android:layout_height="160dp"
-                android:layout_marginLeft="@dimen/margin_light"
+                android:layout_marginLeft="@dimen/margin_thin"
+                android:scaleType="fitCenter"
                 android:background="@drawable/bg_antiquity"
-                android:src="@drawable/z_antiquity0_0" />
+                android:src="@drawable/bg_antiquities" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_light">
+            android:layout_marginTop="@dimen/margin_thin">
 
             <com.enoughmedia.pangyomuseum.page.ItemAntiquity
                 android:id="@+id/antiquity4"
                 android:layout_width="176dp"
                 android:layout_height="160dp"
+                android:scaleType="fitCenter"
                 android:background="@drawable/bg_antiquity"
-                android:src="@drawable/z_antiquity0_0" />
+                android:src="@drawable/bg_antiquities" />
 
             <com.enoughmedia.pangyomuseum.page.ItemAntiquity
                 android:id="@+id/antiquity5"
                 android:layout_width="176dp"
                 android:layout_height="160dp"
-                android:layout_marginLeft="@dimen/margin_light"
+                android:layout_marginLeft="@dimen/margin_thin"
+                android:scaleType="fitCenter"
                 android:background="@drawable/bg_antiquity"
-                android:src="@drawable/z_antiquity0_0" />
+                android:src="@drawable/bg_antiquities" />
 
             <com.enoughmedia.pangyomuseum.page.ItemAntiquity
                 android:id="@+id/antiquity6"
                 android:layout_width="176dp"
                 android:layout_height="160dp"
-                android:layout_marginLeft="@dimen/margin_light"
+                android:layout_marginLeft="@dimen/margin_thin"
+                android:scaleType="fitCenter"
                 android:background="@drawable/bg_antiquity"
-                android:src="@drawable/z_antiquity0_0" />
+                android:src="@drawable/bg_antiquities" />
 
             <com.enoughmedia.pangyomuseum.page.ItemAntiquity
                 android:id="@+id/antiquity7"
                 android:layout_width="176dp"
                 android:layout_height="160dp"
-                android:layout_marginLeft="@dimen/margin_light"
+                android:layout_marginLeft="@dimen/margin_thin"
+                android:scaleType="fitCenter"
                 android:background="@drawable/bg_antiquity"
-                android:src="@drawable/z_antiquity0_0" />
+                android:src="@drawable/bg_antiquities" />
         </LinearLayout>
 
     </LinearLayout>

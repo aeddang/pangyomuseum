@@ -28,6 +28,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposables
 import kotlinx.android.synthetic.main.item_antiquity.view.*
 import kotlinx.android.synthetic.main.page_book.*
+import java.lang.reflect.Array
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -96,7 +97,9 @@ class PageBook  : RxPageFragment() {
         do {
             end = idx+line
             if(end > size) end = size
-            groups.add( allDatas.slice(IntRange(idx,end-1)) )
+            val a = ArrayList<Antiquity>()
+            a.addAll(allDatas.slice(IntRange(idx,end-1)))
+            groups.add( a )
             idx += line
 
         } while (end < size)
@@ -140,7 +143,8 @@ class PageBook  : RxPageFragment() {
         }
 
         override fun setData(data: Any?, idx: Int) {
-            val antis = data as? ArrayList<*>?
+            var antis = data as? ArrayList<*>?
+
             for (index in 0..8) {
                 val view = findViewById<View>(
                     context.resources.getIdentifier(

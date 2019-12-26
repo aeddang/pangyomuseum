@@ -19,12 +19,13 @@ import org.altbeacon.beacon.MonitorNotifier
 import org.altbeacon.beacon.Region
 
 
-class BeaconController (val ctx: Context): BeaconConsumer{
+class BeaconController (val ctx: Context, val setting: SettingPreference): BeaconConsumer{
     private val appTag = javaClass.simpleName
     private var beaconManager:BeaconManager? = null
     private val UNIQUE_ID = "testid"
 
     fun initManager(){
+        if(!setting.getUseBecon()) return
         PagePresenter.getInstance<PageID>()
             .requestPermission(arrayOf(
                 Manifest.permission.BLUETOOTH,Manifest.permission.BLUETOOTH_ADMIN,

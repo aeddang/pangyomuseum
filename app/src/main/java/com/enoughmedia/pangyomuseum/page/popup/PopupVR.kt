@@ -59,7 +59,7 @@ class PopupVR  : RxPageFragment() {
             val assetManager: AssetManager = context!!.assets
             try {
                 inputStream = assetManager.open(path)
-                options.inputType = VrPanoramaView.Options.TYPE_STEREO_OVER_UNDER
+                options.inputType = VrPanoramaView.Options.TYPE_MONO
                 vrPanoramaView.loadImageFromBitmap(BitmapFactory.decodeStream(inputStream), options)
                 inputStream.close()
             } catch (e: Exception) {

@@ -189,7 +189,7 @@ class Gesture(var delegate: Delegate?, private val isVertical: Boolean, private 
         if (startPosA.size == 1) {
             change = changePosA[0]
             if (isComplete) {
-                if (gestureTime >= longTime && Math.abs(change.x) < changeMin && Math.abs(change.y) < changeMin) delegate?.gestureComplete(this,
+                if (gestureTime >= longTime && abs(change.x) < changeMin && abs(change.y) < changeMin) delegate?.gestureComplete(this,
                     Type.LONG_TOUCH
                 )
                 when(moveType) {
@@ -213,12 +213,12 @@ class Gesture(var delegate: Delegate?, private val isVertical: Boolean, private 
                     }
                     else -> { }
                 }
-                if (Math.abs(change.x) < changeMin && Math.abs(change.y) < changeMin) delegate?.gestureComplete(this,
+                if (abs(change.x) < changeMin && abs(change.y) < changeMin) delegate?.gestureComplete(this,
                     Type.TOUCH
                 )
             }
             else {
-                if (Math.abs(change.x) > changeMin || Math.abs(change.y) > changeMin) delegate?.stateChange(this,
+                if (abs(change.x) > changeMin || abs(change.y) > changeMin) delegate?.stateChange(this,
                     Type.PAN
                 )
             }

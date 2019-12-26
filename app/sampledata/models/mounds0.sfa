@@ -1,12 +1,18 @@
 {
   animations: [
     {
+      clips: [
+        {
+          name: 'Take 001',
+          runtime_name: 'mounds0',
+        },
+      ],
       path: 'sampledata/models/mounds0.fbx',
     },
   ],
   materials: [
     {
-      name: 'Material #28',
+      name: 'rock_02_1024_표준',
       parameters: [
         {
           baseColor: [
@@ -17,7 +23,45 @@
           ],
         },
         {
-          baseColorMap: 'stone',
+          baseColorMap: 'Stone03 diffuse2',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+    {
+      name: 'ground_02_1024_표준',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'sand01 diffuse2_2',
         },
         {
           normalMap: null,
@@ -56,13 +100,18 @@
     file: 'sampledata/models/mounds0.fbx',
     name: 'mounds0',
     recenter: 'root',
-    scale: 0.64941700000000002,
+    scale: 0.86752399999999996,
   },
   samplers: [
     {
-      file: 'sampledata/models/mounds0.fbm/stone.jpg',
-      name: 'stone',
-      pipeline_name: 'mounds0.fbm/stone.jpg',
+      file: 'sampledata/models/mounds0.fbm/sand01 diffuse2_2.jpg',
+      name: 'sand01 diffuse2_2',
+      pipeline_name: 'mounds0.fbm/sand01 diffuse2_2.jpg',
+    },
+    {
+      file: 'sampledata/models/mounds0.fbm/Stone03 diffuse2.jpg',
+      name: 'Stone03 diffuse2',
+      pipeline_name: 'mounds0.fbm/Stone03 diffuse2.jpg',
     },
   ],
   version: '0.54:2',

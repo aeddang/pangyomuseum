@@ -60,6 +60,10 @@ class PageMap  : RxPageFragment() {
             PagePresenter.getInstance<PageID>().pageChange(PageID.BOOK)
         }.apply { disposables.add(this) }
 
+        btnSetup.clicks().subscribe {
+            PagePresenter.getInstance<PageID>().openPopup(PageID.POPUP_SETTING)
+        }.apply { disposables.add(this) }
+
         btnCamera.btn.clicks().subscribe {
             PagePresenter.getInstance<PageID>().openPopup(PageID.POPUP_SCAN)
         }.apply { disposables.add(this) }
@@ -86,6 +90,20 @@ class PageMap  : RxPageFragment() {
 
 
         }.apply { disposables.add(this) }
+    }
+
+    override fun onPageAdded(id: Any?) {
+        super.onPageAdded(id)
+
+        if(id == PageID.POPUP_SETTING) {
+            btnCamera.onPause()
+            beaconController.destroyManager()
+        }
+    }
+
+    override fun onPageRemoved(id: Any?) {
+        super.onPageRemoved(id)
+        if(id == PageID.POPUP_SETTING) beaconController.initManager()
     }
 
     override fun onPause() {

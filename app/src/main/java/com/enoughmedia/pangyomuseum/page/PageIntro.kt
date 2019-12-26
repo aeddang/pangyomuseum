@@ -17,12 +17,22 @@ class PageIntro  : RxPageFragment() {
 
     override fun onCreatedView() {
         super.onCreatedView()
+
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disposables.clear()
+    }
+
+    override fun onResume() {
+        super.onResume()
         Observable.interval(1500, TimeUnit.MILLISECONDS)
             .take(1)
             .observeOn(AndroidSchedulers.mainThread()).subscribe {
                 PagePresenter.getInstance<PageID>().pageChange(PageID.MAP)
             }.apply { disposables.add(this) }
-
     }
 
     override fun onDestroy() {

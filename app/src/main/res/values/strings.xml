@@ -29,8 +29,14 @@
     <string name="popup_gesture_text1">축소</string>
     <string name="popup_gesture_text2">회전</string>
 
+    <string name="popup_setting_title">"설정"</string>
 
+    <string name="popup_setting_sound">"음소거"</string>
+    <string name="popup_setting_beacon">"비콘"</string>
+    <string name="popup_setting_reset">"도감 초기화"</string>
+    <string name="popup_setting_reset_check">"도감이 초기화됩니다."</string>
 
     <string name="btn_check_review">다시 보지 않기</string>
-
+    <string name="btn_confirm">확인</string>
+    <string name="btn_cancel">취소</string>
 </resources>

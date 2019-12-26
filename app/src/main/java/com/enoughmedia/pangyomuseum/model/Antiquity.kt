@@ -3,6 +3,9 @@ package com.enoughmedia.pangyomuseum.model
 import android.content.Context
 import com.enoughmedia.pangyomuseum.AppConst
 import com.enoughmedia.pangyomuseum.store.SettingPreference
+import com.google.ar.sceneform.math.Vector3
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 typealias MoundsID = String
@@ -30,23 +33,19 @@ data class Mounds(
         get() {
             return "qrcode_${id}"
         }
-    val introPath:String
-        get() {
-            return "assets:///videos/testRoom1_1920Mono.mp4"
-        }
 
     val panoViewPath:String
         get() {
-            return "panoramas/testRoom1_2kStereo.jpg"
+            return "panoramas/pano${id}.jpg"
         }
     val cardViewPath:String
         get() {
-            return "panoramas/testRoom1_2kStereo.jpg"
+            return "cardboards/cardboard${id}.jpg"
         }
 
     val modelResource:Int
         get() {
-            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:raw/mounds${0}", null, null)
+            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:raw/mounds${id}", null, null)
         }
 
     val titleResource:Int
@@ -65,6 +64,14 @@ data class Mounds(
     val desc:String
         get() {
             return ctx.getString(descResource)
+        }
+
+    val worldVec3: Vector3
+        get() {
+            val x= 0.0f
+            val y= -0.5f
+            val z = 0.5f
+            return Vector3(x, y, z)
         }
 }
 
@@ -87,20 +94,20 @@ data class Antiquity(
 
     val titleResource:Int
         get() {
-            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:string/data_antiquity${moundsID}_${0}_title", null, null)
+            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:string/data_antiquity${moundsID}_${id}_title", null, null)
         }
     val infoResource:Int
         get() {
-            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:string/data_antiquity${moundsID}_${0}_info", null, null)
+            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:string/data_antiquity${moundsID}_${id}_info", null, null)
         }
     val descResource:Int
         get() {
-            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:string/data_antiquity${moundsID}_${0}_desc", null, null)
+            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:string/data_antiquity${moundsID}_${id}_desc", null, null)
         }
 
     val imageResource:Int
         get() {
-            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:drawable/z_antiquity${0}_${0}", null, null)
+            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:drawable/z_antiquity${moundsID}_${id}", null, null)
         }
 
     val modelResource:Int
@@ -119,5 +126,13 @@ data class Antiquity(
     val desc:String
         get() {
             return ctx.getString(descResource)
+        }
+
+    val posVec3: Vector3
+        get() {
+            val x= Math.random().toFloat() * 1.5f - 0.75f
+            val y= -0.25f
+            val z= Math.random().toFloat() * 1.5f - 0.75f
+            return Vector3(x, y, z)
         }
 }

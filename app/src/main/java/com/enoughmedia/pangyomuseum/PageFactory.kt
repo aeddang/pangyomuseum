@@ -71,6 +71,7 @@ class PageFactory {
             PageID.POPUP_SCAN -> PopupScan()
             PageID.POPUP_GUIDE -> PopupGuide()
             PageID.POPUP_GESTURE -> PopupGesture()
+            PageID.POPUP_SETTING -> PopupSetting()
         }
     }
 }
@@ -93,5 +94,6 @@ enum class PageID(val resId: Int, override var position: Int = 9999) : PagePosit
     POPUP_VR(1002),
     POPUP_SCAN(1003),
     POPUP_GUIDE(1004),
-    POPUP_GESTURE(1005)
+    POPUP_GESTURE(1005),
+    POPUP_SETTING(1006)
 }

@@ -20,7 +20,11 @@ import com.skeleton.rx.RxPageFragment
 import com.skeleton.view.player.PlayerEvent
 import com.skeleton.view.player.init
 import dagger.android.support.AndroidSupportInjection
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.page_mounds.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -53,13 +57,8 @@ class PageMounds  : RxPageFragment() {
             infoBox.moundsTitle =  it.title
             infoBox.moundsDesc = it.desc
         }
-
-        infoBox.alpha =0.0f
-        btnCardboard.alpha =0.0f
-        btnPano.alpha =0.0f
-        infoBox.visibility = View.GONE
-        btnCardboard.visibility = View.GONE
-        btnPano.visibility = View.GONE
+        sceneViewBox.alpha = 0f
+        introStart()
     }
 
     override fun onDestroyView() {
@@ -68,17 +67,17 @@ class PageMounds  : RxPageFragment() {
         mounds = null
     }
 
-
-
     override fun onTransactionCompleted() {
         super.onTransactionCompleted()
-
         mounds?.let {
-            player.resume()
-            player.load(it.introPath, 0L, true)
             sceneViewBox.addMounds(it)
+            sceneViewBox.animateAlpha(1.0f)
         }
-
+        Observable.interval(2000, TimeUnit.MILLISECONDS)
+            .take(1)
+            .observeOn(AndroidSchedulers.mainThread()).subscribe {
+               introCompleted()
+            }.apply { disposables.add(this) }
     }
 
     override fun onSubscribe() {
@@ -101,18 +100,18 @@ class PageMounds  : RxPageFragment() {
             PagePresenter.getInstance<PageID>().openPopup(PageID.POPUP_VR, param)
         }.apply { disposables.add(this) }
 
-        player.init().subscribe {
-            when(it.type){
-                PlayerEvent.ERROR -> introCompleted()
-                PlayerEvent.COMPLETED -> introCompleted()
-                else ->{}
-            }
-
-        }.apply { disposables.add(this) }
+    }
+    private fun introStart(){
+        infoBox.alpha =0.0f
+        btnCardboard.alpha =0.0f
+        btnPano.alpha =0.0f
+        infoBox.visibility = View.GONE
+        btnCardboard.visibility = View.GONE
+        btnPano.visibility = View.GONE
     }
 
     private fun introCompleted(){
-        player.animateAlpha(0.0f)
+        this.view?.invalidate()
         infoBox.animateAlpha(1.0f)
         btnCardboard.animateAlpha(1.0f)
         btnPano.animateAlpha(1.0f)
@@ -124,13 +123,11 @@ class PageMounds  : RxPageFragment() {
     override fun onPause() {
         super.onPause()
         sceneViewBox.onPause()
-        player.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        sceneViewBox.onPause()
-        player.onResume()
+        sceneViewBox.onResume()
     }
 
 

@@ -1,0 +1,68 @@
+{
+  animations: [
+    {
+      clips: [
+        {
+          name: 'Take 001',
+          runtime_name: 'mounds1',
+        },
+      ],
+      path: 'sampledata/models/mounds1.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: '01 - Default',
+      parameters: [
+        {
+          baseColor: [
+            0.58823499999999995,
+            0.58823499999999995,
+            0.58823499999999995,
+            1,
+          ],
+        },
+        {
+          baseColorMap: null,
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/mounds1.fbx',
+    name: 'mounds1',
+    recenter: 'root',
+    scale: 0.75245600000000001,
+  },
+  version: '0.54:2',
+}

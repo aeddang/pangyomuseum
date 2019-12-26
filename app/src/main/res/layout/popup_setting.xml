@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@color/transparent_black80">
+     d
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_heavy"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="39dp"
+                android:layout_height="23dp"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_brick_left" />
+
+            <TextView
+                style="@style/font_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/margin_thin"
+                android:layout_marginRight="@dimen/margin_thin"
+                android:text="@string/popup_setting_title"
+                android:textColor="@color/colorYellow"
+                android:textSize="@dimen/font_heavy" />
+
+            <ImageView
+                android:layout_width="39dp"
+                android:layout_height="23dp"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_brick_right" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_heavy"
+            android:layout_marginLeft="@dimen/margin_heavy"
+            android:layout_marginRight="@dimen/margin_heavy"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchSound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/font_medium"
+                    android:textSize="@dimen/font_bold"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/popup_setting_sound"
+                    app:switchPadding="@dimen/margin_thin"
+                    />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchBecon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    style="@style/font_medium"
+                    android:textSize="@dimen/font_bold"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/popup_setting_beacon"
+                    app:switchPadding="@dimen/margin_thin"
+                    />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnReset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    style="@style/font_medium"
+                    android:background="@color/transparent"
+                    android:textSize="@dimen/font_bold"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/popup_setting_reset"/>
+
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="top|right"
+        android:layout_marginTop="@dimen/margin_header"
+        android:layout_marginRight="@dimen/margin_navi">
+
+        <include
+            android:id="@+id/btnClose"
+            layout="@layout/btn_close"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/margin_thin"
+            android:layout_marginRight="@dimen/margin_heavy" />
+
+    </FrameLayout>
+
+</FrameLayout>

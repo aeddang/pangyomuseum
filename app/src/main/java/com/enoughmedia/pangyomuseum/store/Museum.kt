@@ -14,16 +14,26 @@ class Museum(val ctx: Context, val setting:SettingPreference){
         Mounds(ctx, setting,"2", 2, 2),
         Mounds(ctx, setting,"3", 3, 3),
         Mounds(ctx, setting,"4", 4, 4),
-        Mounds(ctx, setting,"5", 5, 5)
+        Mounds(ctx, setting,"5", 5, 5),
+        Mounds(ctx, setting,"6", 6, 6),
+        Mounds(ctx, setting,"7", 7, 7),
+        Mounds(ctx, setting,"8", 8, 8),
+        Mounds(ctx, setting,"9", 9, 9),
+        Mounds(ctx, setting,"10", 10, 10)
     )
 
     val keys =  arrayOf(
-        arrayOf("01","02","03","04","05","06"),
-        arrayOf("11","12","13","14","15","16"),
+        arrayOf(),
+        arrayOf(),
         arrayOf("21","22","23","24","25","26"),
-        arrayOf("31","32","33","34","35","36"),
-        arrayOf("41","42","43","44","45","46"),
-        arrayOf("51","52","53","54","55","56")
+        arrayOf("31"),
+        arrayOf("41","42","43","44","45","46","47"),
+        arrayOf("51","52"),
+        arrayOf("61","62"),
+        arrayOf("71","72","73","74","75","76"),
+        arrayOf("81","82"),
+        arrayOf("91"),
+        arrayOf("101")
     )
 
     fun setup(){
@@ -68,6 +78,14 @@ class Museum(val ctx: Context, val setting:SettingPreference){
 
     fun allAntiquities():List<Antiquity>{
         return mounds.flatMap { it.antiquitise }
+    }
+
+    fun resetMuseum(){
+        mounds.forEach{m->
+            m.antiquitise.forEach {
+                it.isFind = false
+            }
+        }
     }
 
 }

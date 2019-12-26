@@ -4,11 +4,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.ar.sceneform.plugin'
 
-sceneform.asset('sampledata/models/mounds0.fbx', // 'Source Asset Path' specified during import.
-        'default',
-        'sampledata/models/mounds0.sfa',
-        'src/main/res/raw/mounds0')
-
 
 
 android {
@@ -72,6 +67,7 @@ dependencies {
     implementation "com.google.ar:core:$rootProject.arcoreVersion"
     implementation "com.google.ar.sceneform.ux:sceneform-ux:$rootProject.arcoreVersion"
     implementation "com.google.ar.sceneform:core:$rootProject.arcoreVersion"
+    implementation "com.google.ar.sceneform:animation:$rootProject.arcoreVersion"
 
     /**
      * Exo Player
@@ -133,3 +129,59 @@ dependencies {
     // Optional, if you use support library fragments:
     debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$rootProject.leakcanaryVersion"
 }
+
+
+sceneform.asset('sampledata/models/mounds0.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds0.sfa',
+        'src/main/res/raw/mounds0')
+sceneform.asset('sampledata/models/mounds1.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds1.sfa',
+        'src/main/res/raw/mounds1')
+
+sceneform.asset('sampledata/models/mounds2.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds2.sfa',
+        'src/main/res/raw/mounds2')
+
+sceneform.asset('sampledata/models/mounds3.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds3.sfa',
+        'src/main/res/raw/mounds3')
+
+sceneform.asset('sampledata/models/mounds4.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds4.sfa',
+        'src/main/res/raw/mounds4')
+
+sceneform.asset('sampledata/models/mounds5.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds5.sfa',
+        'src/main/res/raw/mounds5')
+
+sceneform.asset('sampledata/models/mounds6.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds6.sfa',
+        'src/main/res/raw/mounds6')
+
+sceneform.asset('sampledata/models/mounds7.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds7.sfa',
+        'src/main/res/raw/mounds7')
+
+sceneform.asset('sampledata/models/mounds8.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds8.sfa',
+        'src/main/res/raw/mounds8')
+
+sceneform.asset('sampledata/models/mounds9.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds9.sfa',
+        'src/main/res/raw/mounds9')
+sceneform.asset('sampledata/models/mounds10.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds10.sfa',
+        'src/main/res/raw/mounds10')
+
+

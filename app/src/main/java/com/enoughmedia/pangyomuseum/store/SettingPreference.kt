@@ -12,6 +12,8 @@ class SettingPreference(context: Context) : CachedPreference(context, Preference
         private const val VIEW_MAP_GUIDE = "viewMapGuide"
 
         private const val IS_FIND = "isFind"
+        private const val USE_BEACON = "useBeacon"
+        private const val USE_SOUND = "useSound"
     }
 
     fun putViewGuide(bool: Boolean) = put(VIEW_GUIDE, bool)
@@ -28,4 +30,10 @@ class SettingPreference(context: Context) : CachedPreference(context, Preference
 
     fun putIsFind(bool: Boolean, id:String) = put("$IS_FIND$id", bool)
     fun getIsFind(id:String): Boolean = get("$IS_FIND$id", false) as Boolean
+
+    fun putUseBecon(bool: Boolean) = put(USE_BEACON, bool)
+    fun getUseBecon(): Boolean = get(USE_BEACON, true) as Boolean
+
+    fun putUseSound(bool: Boolean) = put(USE_SOUND, bool)
+    fun getUseSound(): Boolean = get(USE_SOUND, true) as Boolean
 }
