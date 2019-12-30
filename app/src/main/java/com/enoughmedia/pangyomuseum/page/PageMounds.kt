@@ -7,6 +7,7 @@ import com.enoughmedia.pangyomuseum.PageID
 import com.enoughmedia.pangyomuseum.PageParam
 import com.enoughmedia.pangyomuseum.R
 import com.enoughmedia.pangyomuseum.component.SceneViewBox
+import com.enoughmedia.pangyomuseum.component.SceneViewWorld
 import com.enoughmedia.pangyomuseum.model.Mounds
 import com.enoughmedia.pangyomuseum.model.MoundsID
 import com.enoughmedia.pangyomuseum.page.popup.PopupVR
@@ -51,7 +52,7 @@ class PageMounds  : RxPageFragment() {
 
     override fun onCreatedView() {
         super.onCreatedView()
-        sceneViewBox.viewType = SceneViewBox.ViewType.World
+        //sceneViewBox.viewType = SceneViewWorld.ViewType.World
         mounds = viewModel.repo.museum.getMound(moundsId)
         mounds?.let {
             infoBox.moundsTitle =  it.title
@@ -73,7 +74,7 @@ class PageMounds  : RxPageFragment() {
             sceneViewBox.addMounds(it)
             sceneViewBox.animateAlpha(1.0f)
         }
-        Observable.interval(2000, TimeUnit.MILLISECONDS)
+        Observable.interval(10000, TimeUnit.MILLISECONDS)
             .take(1)
             .observeOn(AndroidSchedulers.mainThread()).subscribe {
                introCompleted()

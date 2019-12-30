@@ -1,0 +1,69 @@
+{
+  animations: [
+    {
+      path: 'sampledata/models/antiquity8_82.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'Material #26',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: '0516',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/antiquity8_82.fbx',
+    name: 'antiquity8_82',
+    recenter: 'root',
+    scale: 1.2924640000000001,
+  },
+  samplers: [
+    {
+      file: 'sampledata/models/antiquity8_82.fbm/0516.jpg',
+      name: '0516',
+      pipeline_name: 'antiquity8_82.fbm/0516.jpg',
+    },
+  ],
+  version: '0.54:2',
+}

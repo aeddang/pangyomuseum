@@ -6,6 +6,7 @@
 
     <color name="colorWhite">#fff</color>
     <color name="colorBlack">#000</color>
+    <color name="colorBlackLight">#242424</color>
     <color name="colorBrownDeep">#3a2e1c</color>
     <color name="colorBrown">#ad7308</color>
     <color name="colorBrownLight">#564f37</color>

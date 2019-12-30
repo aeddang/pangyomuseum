@@ -6,6 +6,7 @@ apply plugin: 'com.google.ar.sceneform.plugin'
 
 
 
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
@@ -68,7 +69,6 @@ dependencies {
     implementation "com.google.ar.sceneform.ux:sceneform-ux:$rootProject.arcoreVersion"
     implementation "com.google.ar.sceneform:core:$rootProject.arcoreVersion"
     implementation "com.google.ar.sceneform:animation:$rootProject.arcoreVersion"
-
     /**
      * Exo Player
      */
@@ -131,6 +131,11 @@ dependencies {
 }
 
 
+
+
+
+
+
 sceneform.asset('sampledata/models/mounds0.fbx', // 'Source Asset Path' specified during import.
         'default',
         'sampledata/models/mounds0.sfa',
@@ -144,17 +149,25 @@ sceneform.asset('sampledata/models/mounds2.fbx', // 'Source Asset Path' specifie
         'default',
         'sampledata/models/mounds2.sfa',
         'src/main/res/raw/mounds2')
-
 sceneform.asset('sampledata/models/mounds3.fbx', // 'Source Asset Path' specified during import.
         'default',
         'sampledata/models/mounds3.sfa',
         'src/main/res/raw/mounds3')
-
+/*
 sceneform.asset('sampledata/models/mounds4.fbx', // 'Source Asset Path' specified during import.
         'default',
         'sampledata/models/mounds4.sfa',
         'src/main/res/raw/mounds4')
 
+sceneform.asset('sampledata/models/mounds7.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds7.sfa',
+        'src/main/res/raw/mounds7')
+sceneform.asset('sampledata/models/mounds9.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds9.sfa',
+        'src/main/res/raw/mounds9')
+ */
 sceneform.asset('sampledata/models/mounds5.fbx', // 'Source Asset Path' specified during import.
         'default',
         'sampledata/models/mounds5.sfa',
@@ -165,23 +178,62 @@ sceneform.asset('sampledata/models/mounds6.fbx', // 'Source Asset Path' specifie
         'sampledata/models/mounds6.sfa',
         'src/main/res/raw/mounds6')
 
-sceneform.asset('sampledata/models/mounds7.fbx', // 'Source Asset Path' specified during import.
-        'default',
-        'sampledata/models/mounds7.sfa',
-        'src/main/res/raw/mounds7')
+
 
 sceneform.asset('sampledata/models/mounds8.fbx', // 'Source Asset Path' specified during import.
         'default',
         'sampledata/models/mounds8.sfa',
         'src/main/res/raw/mounds8')
 
-sceneform.asset('sampledata/models/mounds9.fbx', // 'Source Asset Path' specified during import.
-        'default',
-        'sampledata/models/mounds9.sfa',
-        'src/main/res/raw/mounds9')
+
 sceneform.asset('sampledata/models/mounds10.fbx', // 'Source Asset Path' specified during import.
         'default',
         'sampledata/models/mounds10.sfa',
         'src/main/res/raw/mounds10')
+
+
+
+/*
+
+sceneform.asset('sampledata/models/antiquity8_81.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/antiquity8_81.sfa',
+        'src/main/res/raw/antiquity8_81')
+
+sceneform.asset('sampledata/models/antiquity8_82.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/antiquity8_82.sfa',
+        'src/main/res/raw/antiquity8_82')
+
+sceneform.asset('sampledata/models/antiquity9_91.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/antiquity9_91.sfa',
+        'src/main/res/raw/antiquity9_91')
+
+sceneform.asset('sampledata/models/antiquity10_101.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/antiquity10_101.sfa',
+        'src/main/res/raw/antiquity10_101')
+sceneform.asset('sampledata/models/antiquity7_73.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/antiquity7_73.sfa',
+        'src/main/res/raw/antiquity7_73')
+sceneform.asset('sampledata/models/antiquity7_74.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/antiquity7_74.sfa',
+        'src/main/res/raw/antiquity7_74')
+sceneform.asset('sampledata/models/antiquity7_75.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/antiquity7_75.sfa',
+        'src/main/res/raw/antiquity7_75')
+sceneform.asset('sampledata/models/antiquity7_76.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/antiquity7_76.sfa',
+        'src/main/res/raw/antiquity7_76')
+
+
+ */
+
+
 
 

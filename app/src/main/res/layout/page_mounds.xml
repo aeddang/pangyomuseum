@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
-    android:background="@color/colorBlack">
+    >
 
-    <com.enoughmedia.pangyomuseum.component.SceneViewBox
+    <com.enoughmedia.pangyomuseum.component.SceneViewWorld
         android:id="@+id/sceneViewBox"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

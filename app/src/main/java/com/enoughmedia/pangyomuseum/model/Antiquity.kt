@@ -1,6 +1,8 @@
 package com.enoughmedia.pangyomuseum.model
 
 import android.content.Context
+import android.graphics.Point
+import android.graphics.PointF
 import com.enoughmedia.pangyomuseum.AppConst
 import com.enoughmedia.pangyomuseum.store.SettingPreference
 import com.google.ar.sceneform.math.Vector3
@@ -29,6 +31,21 @@ data class Mounds(
         get() {
             return "beacon_${id}"
         }
+    val markerPos:PointF?
+        get() {
+            return when(id){
+                "0" -> PointF(515f/1645f,0f/978f)
+                "1" -> PointF(825f/1645f,15f/978f)
+                "2" -> PointF(1011f/1645f,15f/978f)
+                "3" -> PointF(286f/1645f,471f/978f)
+                "4" -> PointF(722f/1645f,362f/978f)
+                "5" -> PointF(952f/1645f,283f/978f)
+                "6" -> PointF(1194f/1645f,247f/978f)
+                "9" -> PointF(277f/1645f,733f/978f)
+                "10" -> PointF(621f/1645f,563f/978f)
+                else -> null
+            }
+        }
     val findCode:String
         get() {
             return "qrcode_${id}"
@@ -45,7 +62,13 @@ data class Mounds(
 
     val modelResource:Int
         get() {
-            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:raw/mounds${id}", null, null)
+            val key= when(id){
+                "4" -> "2"
+                "7" -> "2"
+                "9" -> "2"
+                else -> id
+            }
+            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:raw/mounds${key}", null, null)
         }
 
     val titleResource:Int
@@ -70,7 +93,7 @@ data class Mounds(
         get() {
             val x= 0.0f
             val y= -0.5f
-            val z = 0.5f
+            val z = 0.7f
             return Vector3(x, y, z)
         }
 }
@@ -112,7 +135,7 @@ data class Antiquity(
 
     val modelResource:Int
         get() {
-            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:raw/antiquity${0}_${0}", null, null)
+            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:raw/antiquity${moundsID}_${id}", null, null)
         }
 
     val title:String
@@ -130,9 +153,45 @@ data class Antiquity(
 
     val posVec3: Vector3
         get() {
-            val x= Math.random().toFloat() * 1.5f - 0.75f
-            val y= -0.25f
-            val z= Math.random().toFloat() * 1.5f - 0.75f
-            return Vector3(x, y, z)
+            return  when(id){
+                "21" -> Vector3(0.0f, -0.41f, 0.8f)
+                "22" -> Vector3(0.21f, -0.42f, 0.7f)
+                "23" -> Vector3(-0.4f, -0.43f, 0.91f)
+                "24" -> Vector3(0.2f, -0.44f, 0.51f)
+                "25" -> Vector3(-0.22f, -0.45f, 0.63f)
+                "26" -> Vector3(0.25f, -0.46f, 1.12f)
+
+                "31" -> Vector3(0.0f, -0.44f, 0.3f)
+
+                "41" -> Vector3(0.0f, -0.41f, 0.5f)
+                "42" -> Vector3(0.21f, -0.42f, 0.6f)
+                "43" -> Vector3(-0.4f, -0.43f, 0.81f)
+                "44" -> Vector3(0.2f, -0.44f, 0.41f)
+                "45" -> Vector3(-0.22f, -0.45f, 0.43f)
+                "46" -> Vector3(0.25f, -0.46f, 0.82f)
+                "47" -> Vector3(0.0f, -0.46f, 0.82f)
+
+                "51" -> Vector3(0.0f, -0.42f, 0.3f)
+                "52" -> Vector3(0.21f, -0.42f, 0.4f)
+
+                "61" -> Vector3(0.0f, -0.42f, 0.5f)
+                "62" -> Vector3(0.21f, -0.42f, 0.6f)
+
+                "71" -> Vector3(0.0f, -0.41f, 1.1f)
+                "72" -> Vector3(0.21f, -0.42f, 0.7f)
+                "73" -> Vector3(-0.4f, -0.43f, 0.61f)
+                "74" -> Vector3(0.2f, -0.44f, 0.51f)
+                "75" -> Vector3(-0.22f, -0.45f, 0.63f)
+                "76" -> Vector3(0.25f, -0.42f, 0.82f)
+
+                "81" -> Vector3(0.0f, -0.41f, 0.5f)
+                "82" -> Vector3(0.21f, -0.42f, 0.6f)
+
+                "91" -> Vector3(0.0f, -0.41f, 0.3f)
+
+                "101" -> Vector3(0.21f, -0.42f, 0.6f)
+
+                else -> Vector3(0.0f, -0.41f, 0.0f)
+            }
         }
 }

@@ -4,6 +4,9 @@
     <string name="notice_need_permission">권한승인을 하지않으면 일부기능을 사용 할 수 없습니다.</string>
     <string name="notice_need_bluetooth">Bluetooth를 켜지않으면 일부기능을 사용 할 수 없습니다.</string>
 
+    <string name="notice_disable_arcore">현제디바이스는 ARCore 이용이 불가능 합니다.</string>
+    <string name="notice_need_arcore">ARCore를 설치하신후에 이용가능합니다.</string>
+
     <string name="intro_loading">데이터를 불러오고 있습니다.</string>
 
     <string name="page_map_camera_guide">카메라 버튼을 누르고 주변에\n마커 이미지를 비춰보세요.</string>

@@ -1,5 +1,6 @@
 package com.enoughmedia.pangyomuseum.component
 
+import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PointF
@@ -55,9 +56,7 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
         antiquities = mounds.antiquitise
         worldVec3 = mounds.worldVec3
         renderModel(mounds.modelResource, mounds.id)
-        antiquities?.forEach {ant->
-            renderModel(ant.modelResource, ant.id, true, ant)
-        }
+
     }
 
     override fun onDestroyedView() {
@@ -138,7 +137,7 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
 
     }
     private fun moveCamera(delta:Float){
-        Log.i(appTag,"deltaScale ${deltaScale}")
+
         val forword = sceneView.scene.camera.forward
         val x = forword.x * delta + finalCameraPosition.x
         val y = forword.y * delta + finalCameraPosition.y
@@ -211,6 +210,7 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
     private var node:AnchorNode? = null
     private fun addNode(model: ModelRenderable?, id:String? = "") {
         model?.let { rm->
+
             val x = when(viewType){
                 ViewType.Node ->  0.0f
                 ViewType.World ->  worldVec3?.x ?: 0.0f
@@ -223,22 +223,44 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
                 ViewType.Node ->  -0.03f
                 ViewType.World -> worldVec3?.y ?: -0.5f
             }
-
             node = AnchorNode().apply {
                 setParent(sceneView.scene)
                 localPosition = Vector3(x, y, z)
-                localScale = Vector3(finalScale, finalScale, finalScale)
-                if(viewType == ViewType.World) setCameraStart()
+                when(viewType) {
+                    ViewType.World -> {
+                        finalScale = 1.0f
+                        localScale = Vector3(finalScale, finalScale, finalScale)
+                        setCameraStart()
+                    }
+                    ViewType.Node -> {
+
+                        finalScale = 1.2f
+                        localScale = Vector3(finalScale, finalScale, finalScale)
+                    }
+                }
                 name = id
                 renderable = rm
                 isSmoothed = true
 
             }
-            sceneView.scene.addChild(node)
+
 
             val aniData = rm.getAnimationData(0)
             animator = ModelAnimator(aniData, rm)
             animator?.start()
+            animator?.addListener(object :Animator.AnimatorListener{
+                override fun onAnimationRepeat(animation: Animator?) {}
+                override fun onAnimationCancel(animation: Animator?) {}
+                override fun onAnimationStart(animation: Animator?) {
+                    sceneView.scene.addChild(node)
+                }
+                override fun onAnimationEnd(animation: Animator?) {
+                    antiquities?.forEach {ant->
+                        renderModel(ant.modelResource, ant.id, true, ant)
+                    }
+                }
+
+            })
         }
     }
 
@@ -248,7 +270,7 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
                 setParent(sceneView.scene)
                 val pos = anti?.posVec3 ?: Vector3()
                 localPosition = pos
-                localScale = Vector3(finalScale, finalScale, finalScale)
+                localScale = Vector3(3.0f,3.0f,3.0f)
                 name = id
                 renderable = rm
                 isSmoothed = true
