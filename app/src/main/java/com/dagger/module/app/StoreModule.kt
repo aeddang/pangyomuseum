@@ -20,6 +20,7 @@ class StoreModule {
 
     @Provides
     @Singleton
-    fun provideBeaconController(@Named("appContext") ctx: Context, setting: SettingPreference): BeaconController = BeaconController(ctx, setting)
+    fun provideBeaconController(@Named("appContext") ctx: Context, setting: SettingPreference, museum: Museum): BeaconController
+            = BeaconController(ctx, setting, museum)
 
 }

@@ -59,7 +59,7 @@ class Museum(val ctx: Context, val setting:SettingPreference){
         return mounds.find { it.findCode == code }
     }
 
-    fun getMoundByBeacon(id:String?):Mounds?{
+    fun getMoundByBeacon(id:Int?):Mounds?{
         return mounds.find { it.findBeaconID == id }
     }
 

@@ -62,7 +62,7 @@ class PageMap  : RxPageFragment() {
         val areaF = Size(areaMaker.width, areaMaker.height).getCropRatioSize(Size(830,499))
         markers = viewModel.repo.museum.mounds.map{
             val m = Marker(context!!)
-            m.id = it.findBeaconID
+            m.id = it.id
             it.markerPos?.let {pos->
                 m.x = areaF.left + (areaF.width() * pos.x)
                 m.y = areaF.top + (areaF.height() * pos.y)
@@ -102,7 +102,7 @@ class PageMap  : RxPageFragment() {
                     marker?.findOff()
                 }
                 BeaconController.Event.EnterRegion ->{
-                    val mounds = viewModel.repo.museum.getMoundByBeacon(be.value)
+                    val mounds = viewModel.repo.museum.getMound(be.value)
                     mounds ?: return@subscribe
                     infoMessage.viewMessage(R.string.page_map_camera_guide, InfoMessage.Type.Marker)
 

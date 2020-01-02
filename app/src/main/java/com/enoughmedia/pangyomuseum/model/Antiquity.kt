@@ -27,9 +27,22 @@ data class Mounds(
         antiquity.moundsID = id
         antiquitise.add(antiquity)
     }
-    val findBeaconID:String
+    val findBeaconID:Int
         get() {
-            return "beacon_${id}"
+            return when(id){
+                "0" -> 32239
+                "1" -> 32240
+                "2" -> 35997
+                "3" -> 35998
+                "4" -> 36001
+                "5" -> 36002
+                "6" -> 36007
+                "7" -> 12211
+                "8" -> 34327
+                "9" -> 34333
+                "10" -> 34334
+                else -> 0
+            }
         }
     val markerPos:PointF?
         get() {
@@ -63,9 +76,6 @@ data class Mounds(
     val modelResource:Int
         get() {
             val key= when(id){
-                "4" -> "2"
-                "7" -> "2"
-                "9" -> "2"
                 else -> id
             }
             return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:raw/mounds${key}", null, null)

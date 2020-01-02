@@ -13,16 +13,14 @@ import com.lib.page.PagePresenter
 import com.lib.page.PageRequestPermission
 import com.lib.util.Log
 import io.reactivex.subjects.PublishSubject
-import org.altbeacon.beacon.BeaconConsumer
-import org.altbeacon.beacon.BeaconManager
-import org.altbeacon.beacon.MonitorNotifier
-import org.altbeacon.beacon.Region
+import org.altbeacon.beacon.*
 
 
-class BeaconController (val ctx: Context, val setting: SettingPreference): BeaconConsumer{
+class BeaconController (val ctx: Context, val setting: SettingPreference, val museum: Museum): BeaconConsumer{
     private val appTag = javaClass.simpleName
     private var beaconManager:BeaconManager? = null
-    private val UNIQUE_ID = "testid"
+    private var regions = museum.mounds.map { Region(it.id, null, null, Identifier.fromInt(it.findBeaconID)) }
+    private val UNIQUE_ID = "mounds"
 
     fun initManager(){
         if(!setting.getUseBecon()) return
@@ -64,11 +62,16 @@ class BeaconController (val ctx: Context, val setting: SettingPreference): Beaco
             }
         }
         beaconManager = BeaconManager.getInstanceForApplication(ctx)
+        beaconManager?.beaconParsers?.add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
+        beaconManager?.foregroundScanPeriod = 500L
+        beaconManager?.foregroundBetweenScanPeriod = 500L
+
         beaconManager?.bind(this)
     }
 
     fun destroyManager(){
         beaconManager?.unbind(this)
+        regions.forEach {  beaconManager?.stopMonitoringBeaconsInRegion(it) }
         beaconManager = null
     }
 
@@ -91,11 +94,13 @@ class BeaconController (val ctx: Context, val setting: SettingPreference): Beaco
         beaconManager?.removeAllMonitorNotifiers()
         beaconManager?.addMonitorNotifier(object : MonitorNotifier {
             override fun didEnterRegion(region: Region?) {
-                Log.i(appTag, "I just saw an beacon for the first time!")
+                Toast.makeText(ctx, R.string.notice_beacon_find, Toast.LENGTH_LONG).show()
+                Log.i(appTag, "${region.toString()} ${region?.uniqueId} ${region?.getIdentifier(0)} ")
                 observable.onNext(BeaconEvent(Event.EnterRegion, region?.uniqueId))
             }
 
             override fun didExitRegion(region: Region?) {
+                Toast.makeText(ctx, R.string.notice_beacon_out, Toast.LENGTH_LONG).show()
                 Log.i(appTag, "I no longer see an beacon")
                 observable.onNext(BeaconEvent(Event.ExitRegion, region?.uniqueId))
             }
@@ -107,14 +112,9 @@ class BeaconController (val ctx: Context, val setting: SettingPreference): Beaco
         })
 
         try {
-            beaconManager?.startMonitoringBeaconsInRegion(
-                Region(
-                    UNIQUE_ID,
-                    null,
-                    null,
-                    null
-                )
-            )
+            regions.forEach {
+                beaconManager?.startMonitoringBeaconsInRegion(it)
+            }
         } catch (e: RemoteException) {
         }
     }

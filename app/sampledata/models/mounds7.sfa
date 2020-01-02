@@ -1,0 +1,118 @@
+{
+  animations: [
+    {
+      clips: [
+        {
+          name: 'Take 001',
+          runtime_name: 'mounds7',
+        },
+      ],
+      path: 'sampledata/models/mounds7.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: '01 - Default',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'Stone03 diffuse2',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+    {
+      name: '07 - Default',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'sand01 diffuse2_2',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/mounds7.fbx',
+    name: 'mounds7',
+    recenter: 'root',
+    scale: 0.70198300000000002,
+  },
+  samplers: [
+    {
+      file: 'sampledata/models/mounds7.fbm/sand01 diffuse2_2.jpg',
+      name: 'sand01 diffuse2_2',
+      pipeline_name: 'mounds7.fbm/sand01 diffuse2_2.jpg',
+    },
+    {
+      file: 'sampledata/models/mounds7.fbm/Stone03 diffuse2.jpg',
+      name: 'Stone03 diffuse2',
+      pipeline_name: 'mounds7.fbm/Stone03 diffuse2.jpg',
+    },
+  ],
+  version: '0.54:2',
+}

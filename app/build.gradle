@@ -131,11 +131,6 @@ dependencies {
 }
 
 
-
-
-
-
-
 sceneform.asset('sampledata/models/mounds0.fbx', // 'Source Asset Path' specified during import.
         'default',
         'sampledata/models/mounds0.sfa',
@@ -153,7 +148,7 @@ sceneform.asset('sampledata/models/mounds3.fbx', // 'Source Asset Path' specifie
         'default',
         'sampledata/models/mounds3.sfa',
         'src/main/res/raw/mounds3')
-/*
+
 sceneform.asset('sampledata/models/mounds4.fbx', // 'Source Asset Path' specified during import.
         'default',
         'sampledata/models/mounds4.sfa',
@@ -167,7 +162,7 @@ sceneform.asset('sampledata/models/mounds9.fbx', // 'Source Asset Path' specifie
         'default',
         'sampledata/models/mounds9.sfa',
         'src/main/res/raw/mounds9')
- */
+
 sceneform.asset('sampledata/models/mounds5.fbx', // 'Source Asset Path' specified during import.
         'default',
         'sampledata/models/mounds5.sfa',
