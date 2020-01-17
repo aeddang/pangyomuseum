@@ -36,10 +36,7 @@ open class ScanCamera: Camera {
         fun extractionData(camera: ScanCamera, data: Bitmap){}
     }
     fun setOnExtractionCameraListener( _delegate:Delegate? ){ delegate = _delegate }
-    var isExtraction = false
-        set(value) {
-            field = value
-        }
+
 
     override fun onCreatedView() {
         super.onCreatedView()

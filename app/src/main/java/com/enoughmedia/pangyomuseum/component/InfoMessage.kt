@@ -64,7 +64,7 @@ class InfoMessage: RxLinearLayout {
         animateAlpha(1.0f)
         when(type){
             Type.Default ->{
-                bg.setImageResource(R.drawable.bg_blue)
+                bg.setImageResource(R.drawable.bg_black)
                 icon.setImageResource(R.drawable.icon_marker)
             }
             Type.Marker ->{
@@ -72,7 +72,7 @@ class InfoMessage: RxLinearLayout {
                 icon.setImageResource(R.drawable.icon_marker)
             }
             Type.Find ->{
-                bg.setImageResource(R.drawable.bg_red)
+                bg.setImageResource(R.drawable.bg_black)
                 icon.setImageResource(R.drawable.icon_brick)
             }
             Type.Book ->{

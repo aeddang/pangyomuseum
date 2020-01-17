@@ -23,6 +23,19 @@
     <string name="data_mounds10_desc">후대 묘역 조성으로 인해 천정과 돌방 상부는 대부분 파괴되어 없어지고, 돌방 일부와 널길만이 남아 있다. 유물은 널방 내부에서 금동제 장신구와 관못이 출토되었다. 다량의 회가 바닥과 벽에 발견된 흔적이 있어 당시 세계사 교류의 증거로서 보이고 있다.</string>
 
 
+    <string name="data_mounds0_address">경기도 성남시 분당구 삼평동 693-1</string>
+    <string name="data_mounds1_address">경기도 성남시 분당구 삼평동 693-1</string>
+    <string name="data_mounds2_address">경기도 성남시 분당구 판교동 507-8</string>
+    <string name="data_mounds3_address">경기도 성남시 분당구 판교동 508-8</string>
+    <string name="data_mounds4_address">경기도 성남시 분당구 판교동 485-13</string>
+    <string name="data_mounds5_address">경기도 성남시 분당구 판교동 502-4</string>
+    <string name="data_mounds6_address">경기도 성남시 분당구 판교동 499</string>
+    <string name="data_mounds7_address">경기도 성남시 분당구 판교동 499</string>
+    <string name="data_mounds8_address">경기도 성남시 분당구 판교동 493</string>
+    <string name="data_mounds9_address">경기도 성남시 분당구 판교동 493</string>
+    <string name="data_mounds10_address">경기도 성남시 분당구 판교동 493</string>
+
+
 
     <string name="data_antiquity2_21_title">단경호</string>
     <string name="data_antiquity2_21_info">시대 : 삼국시대\n크기 : 21.8 x 17.1 x ? (Cm)\n출토 위치 : 삼평동 유적 (16구역 나지점 1호 횡혈식 석실분) </string>

@@ -68,6 +68,13 @@ class Museum(val ctx: Context, val setting:SettingPreference){
         return mounds.find { it.id == id }
     }
 
+    fun resetFindMounds(){
+        mounds.forEach { it.isFind = false }
+    }
+
+    fun hasFindMounds():Mounds?{
+        return mounds.find { it.isFind  }
+    }
     fun getMound(idx:Int):Mounds?{
         return mounds[idx]
     }

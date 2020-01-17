@@ -2,6 +2,8 @@ package com.enoughmedia.pangyomuseum.page
 
 import android.os.Bundle
 import android.util.Size
+import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import com.enoughmedia.pangyomuseum.MainActivity
 import com.enoughmedia.pangyomuseum.PageID
@@ -31,7 +33,7 @@ class PageMap  : RxPageFragment() {
 
     @Inject
     lateinit var beaconController: BeaconController
-
+    private var isInit = false
     private var markers:List<Marker>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,10 +51,14 @@ class PageMap  : RxPageFragment() {
         super.onTransactionCompleted()
         if( !viewModel.repo.setting.getViewGuide() ) PagePresenter.getInstance<PageID>().openPopup(PageID.POPUP_GUIDE)
         if( !viewModel.repo.setting.getViewMapGuide() ) {
-            infoMessage.viewMessage(R.string.page_map_camera_guide)
+            val main = PagePresenter.getInstance<PageID>().activity as?  MainActivity?
+            main?.viewMessage(R.string.page_map_camera_guide, InfoMessage.Type.Default)
             viewModel.repo.setting.putViewMapGuide(true)
         }
+        viewModel.repo.museum.resetFindMounds()
         createMarkers()
+        isInit = true
+        beaconController.initManager()
     }
 
     private fun createMarkers(){
@@ -94,23 +100,37 @@ class PageMap  : RxPageFragment() {
 
         beaconController.observable.subscribe { be->
             val marker =markers?.find { be.value == it.id }
+            val mounds = viewModel.repo.museum.getMound(be.value)
             when(be.type){
-                BeaconController.Event.DetermineStateForRegion ->{ btnCamera.effectOn(false) }
-                BeaconController.Event.ExitRegion -> {
-                    infoMessage.hideMessage()
+
+                BeaconController.Event.Bind ->{
                     btnCamera.effectOn(false)
-                    marker?.findOff()
                 }
+                BeaconController.Event.UnBind ->{
+                    btnCamera.effectOff()
+                    viewModel.repo.museum.resetFindMounds()
+                    markers?.forEach { it.findOff() }
+                }
+                BeaconController.Event.DetermineStateForRegion ->{
+
+                }
+
+                BeaconController.Event.ExitRegion -> {
+                    marker?.findOff()
+                    mounds?.isFind = false
+                    if( viewModel.repo.museum.hasFindMounds() == null ) btnCamera.effectOn(false)
+                }
+
                 BeaconController.Event.EnterRegion ->{
                     val mounds = viewModel.repo.museum.getMound(be.value)
                     mounds ?: return@subscribe
-                    infoMessage.viewMessage(R.string.page_map_camera_guide, InfoMessage.Type.Marker)
-
+                    mounds.isFind = true
                     val main = PagePresenter.getInstance<PageID>().activity as?  MainActivity?
-                    val msg = mounds.title + (context?.getString(R.string.popup_scan_find_info) ?: "")
-                    main?.viewMessage(msg, InfoMessage.Type.Find, 2000L)
+                    main?.viewMessage(R.string.page_map_camera_guide, InfoMessage.Type.Default, 3000L)
                     btnCamera.effectOn(true)
                     marker?.findOn()
+                    val msg = mounds.title +" "+ (context?.getString(R.string.popup_scan_find_info) ?: "")
+                    addInfoMessage(msg)
                 }
             }
 
@@ -119,10 +139,21 @@ class PageMap  : RxPageFragment() {
         }.apply { disposables.add(this) }
     }
 
+    private fun addInfoMessage(msg:String){
+        if(infoMessage0.visibility == View.GONE) {
+            infoMessage0.viewMessage(msg, InfoMessage.Type.Find, 2000L)
+            return
+        }
+        if(infoMessage1.visibility == View.GONE) {
+            infoMessage1.viewMessage(msg, InfoMessage.Type.Find, 2000L)
+            return
+        }
+    }
+
     override fun onPageAdded(id: Any?) {
         super.onPageAdded(id)
 
-        if(id == PageID.POPUP_SETTING) {
+        if(id == PageID.POPUP_SETTING || id == PageID.POPUP_SCAN) {
             btnCamera.onPause()
             beaconController.destroyManager()
         }
@@ -130,7 +161,7 @@ class PageMap  : RxPageFragment() {
 
     override fun onPageRemoved(id: Any?) {
         super.onPageRemoved(id)
-        if(id == PageID.POPUP_SETTING) beaconController.initManager()
+        if(id == PageID.POPUP_SETTING || id == PageID.POPUP_SCAN) beaconController.initManager()
     }
 
     override fun onPause() {
@@ -143,7 +174,7 @@ class PageMap  : RxPageFragment() {
     override fun onResume() {
         super.onResume()
         btnCamera.onResume()
-        beaconController.initManager()
+        if(isInit) beaconController.initManager()
     }
 
 

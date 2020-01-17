@@ -17,6 +17,7 @@ class Marker : RxFrameLayout {
 
     override fun onCreatedView() {
         this.alpha = 0.0f
+        findOff()
         this.animateAlpha(1.0f)
 
     }

@@ -3,6 +3,7 @@ package com.enoughmedia.pangyomuseum.component
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Path
 import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -13,6 +14,8 @@ import com.enoughmedia.pangyomuseum.PageParam
 import com.enoughmedia.pangyomuseum.R
 import com.enoughmedia.pangyomuseum.model.Antiquity
 import com.enoughmedia.pangyomuseum.model.Mounds
+import com.google.ar.core.Pose
+import com.google.ar.core.Session
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.animation.ModelAnimator
 import com.google.ar.sceneform.math.Quaternion
@@ -24,6 +27,10 @@ import com.lib.util.Log
 import com.skeleton.rx.RxFrameLayout
 import kotlinx.android.synthetic.main.cp_scene_view_box.view.*
 import java.util.function.Consumer
+import kotlin.math.abs
+import kotlin.math.cos
+import kotlin.math.floor
+import kotlin.math.sin
 
 
 class SceneViewBox : RxFrameLayout , Gesture.Delegate {
@@ -87,6 +94,7 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
 
     override fun stateChange(g: Gesture, e: Gesture.Type) {
         when (e) {
+            Gesture.Type.PINCH_MOVE -> pinchMove(g.deltaPinchX, g.deltaPinchY, g.deltaDist)
             Gesture.Type.MOVE_H, Gesture.Type.MOVE_V -> touchMove(g.deltaX, g.deltaY)
             Gesture.Type.END -> touchReset()
             else -> { }
@@ -112,51 +120,100 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
 
 
     val scaleSensitivity = 25.0f
-    val roteSensitivity = 05.0f
+    val moveSensitivity = 300.0f
+    val roteSensitivity = 5.0f
+    var cameraZ  = 0.1f
     var finalScale  = 1.0f
     var deltaScale = finalScale
     var finalRotation  = PointF(0.0f,0.0f)
     var deltaRotation  = PointF(0.0f,0.0f)
+    var modifyRotation  = PointF(0.0f,0.0f)
     var finalCameraPosition  = Vector3(0.0f,0.0f,0.0f)
+    var finalNodeRotation  = Quaternion(0.0f,0.0f,0.0f,0.0f)
     private fun touchReset() {
         finalRotation.x = deltaRotation.x
         finalRotation.y = deltaRotation.y
+        finalScale = deltaScale
+        node?.let{
+            finalNodeRotation = it.localRotation
+        }
+
+        cameraMoveReset()
+    }
+    private fun cameraMoveReset(){
         finalCameraPosition.x = sceneView.scene.camera.localPosition.x
         finalCameraPosition.y = sceneView.scene.camera.localPosition.y
         finalCameraPosition.z = sceneView.scene.camera.localPosition.z
-        finalScale = deltaScale
     }
 
     private fun setCameraStart(){
         deltaScale = -0.7f
         deltaRotation  = PointF(180.0f,-20f)
-
         rotateCamera(deltaRotation.x, deltaRotation.y)
-        moveCamera(deltaScale)
+        zoomCamera(deltaScale)
         touchReset()
 
     }
-    private fun moveCamera(delta:Float){
-
-        val forword = sceneView.scene.camera.forward
+    private fun zoomCamera(delta:Float){
+        val forword:Vector3  = sceneView.scene.camera.forward
         val x = forword.x * delta + finalCameraPosition.x
         val y = forword.y * delta + finalCameraPosition.y
         val z = forword.z * delta + finalCameraPosition.z
-
         sceneView.scene.camera.localPosition = Vector3(x,y,z)
 
     }
 
+    private fun moveCamera(deltaX:Float, deltaY:Float, deltaZ:Float){
+        val left:Vector3  = sceneView.scene.camera.left
+        val up:Vector3  = sceneView.scene.camera.up
+        val forword:Vector3  = sceneView.scene.camera.forward
+        val x = (left.x * deltaX) + (up.x * deltaY) + (forword.x * deltaZ) +finalCameraPosition.x
+        val y = (left.y * deltaX) + (up.y * deltaY) + (forword.y * deltaZ) +finalCameraPosition.y
+        val z = (left.z * deltaX) + (up.z * deltaY) + (forword.z * deltaZ) +finalCameraPosition.z
+        sceneView.scene.camera.localPosition = Vector3(x,y,z)
+    }
+    private fun rotateNode(deltaX:Float, deltaY:Float){
+        node ?: return
+        val center = Vector3(0.0f, 0.0f, 0.0f)
+        val dy = -deltaY - modifyRotation.y
+        val rX = (dy/1000.0) * Math.PI * 2.0
+        val rY= Math.PI
+        val div = Math.PI/2.0
+        val idx = (floor(rX/div)%6)
+        val dr = when(idx){
+            -4.0 -> Vector3.up()
+            -3.0 -> Vector3.down()
+            -1.0, -2.0 -> Vector3.right()
+            2.0, 3.0 -> Vector3.right()
+            4.0, 5.0 -> Vector3.up()
+            else -> Vector3.left()
+        }
+        if(abs(rX) >= Math.PI * 2.0){
+            modifyRotation.y = deltaRotation.y
+        }
+        val x = center.x + (cameraZ * cos(rX) * cos(rY))
+        val y = center.y + (cameraZ * sin(rX) * cos(rY))
+        val z = center.z + (cameraZ * sin(rY))
+        val cameraPos = Vector3(x.toFloat(), y.toFloat(), z.toFloat())
+        val direction = Vector3.subtract(center, cameraPos)
+        val rt = Quaternion.lookRotation( direction , dr)
+
+        sceneView.scene.camera.localRotation = rt
+        sceneView.scene.camera.localPosition = cameraPos
+
+        val h = Quaternion.axisAngle(Vector3.up(),deltaX)
+        val v = Quaternion.axisAngle(Vector3.right(),0.0f)
+        val m = Quaternion.multiply(h,v)
+        node?.let { it.worldRotation = m }
+
+
+    }
     private fun rotateCamera(deltaX:Float, deltaY:Float){
         val h = Quaternion.axisAngle(Vector3.up(),deltaX)
         val v = Quaternion.axisAngle(Vector3.right(),deltaY)
         val m = Quaternion.multiply(h,v)
-        when(viewType){
-            ViewType.Node -> node?.localRotation = m
-            ViewType.World -> sceneView.scene.camera.localRotation = m
-        }
-        deltaRotation.x = deltaX
-        deltaRotation.y = deltaY
+        sceneView.scene.camera.localRotation = m
+
     }
 
     override fun pinchChange(g: Gesture, dist: Float) {
@@ -168,14 +225,34 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
                 val m = Vector3(deltaScale, deltaScale, deltaScale)
                 node?.localScale = m
             }
-            ViewType.World -> moveCamera(deltaScale)
+            ViewType.World -> {}// zoomCamera(deltaScale)
         }
+    }
+    private fun pinchMove(deltaX:Int, deltaY:Int, deltaZ:Float) {
+        if(viewType == ViewType.Node) return
+        val dx = deltaX.toFloat()/moveSensitivity
+        val dy = deltaY.toFloat()/moveSensitivity
+        moveCamera(dx,dy, deltaZ/scaleSensitivity)
     }
 
     private fun touchMove(deltaX:Int, deltaY:Int) {
-        val mx = finalRotation.x + (deltaX.toFloat()/roteSensitivity)
-        val my = finalRotation.y + (deltaY.toFloat()/roteSensitivity)
-        rotateCamera(mx,my)
+        var mx = finalRotation.x
+        var my = finalRotation.y
+        when(viewType){
+            ViewType.Node -> {
+                mx += deltaX.toFloat()
+                my += deltaY.toFloat()
+                rotateNode(mx,my)
+            }
+            ViewType.World -> {
+                mx += (deltaX.toFloat()/roteSensitivity)
+                my += (deltaY.toFloat()/roteSensitivity)
+                rotateCamera(mx, my)
+            }
+        }
+        deltaRotation.x = mx
+        deltaRotation.y = my
+
     }
 
 
@@ -212,18 +289,24 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
         model?.let { rm->
 
             val x = when(viewType){
-                ViewType.Node ->  0.0f
+                ViewType.Node ->  0.00f
                 ViewType.World ->  worldVec3?.x ?: 0.0f
             }
             val z = when(viewType){
-                ViewType.Node ->  -0.1f
+                ViewType.Node ->  0.00f
                 ViewType.World ->  worldVec3?.z ?: 0.0f
             }
             val y = when(viewType){
-                ViewType.Node ->  -0.03f
+                ViewType.Node ->  -0.02f
                 ViewType.World -> worldVec3?.y ?: -0.5f
             }
+            /*
+            val pos = floatArrayOf(0.0f,0.0f,0.0f)
+            val rotation = floatArrayOf(0.0f,0.0f,0.0f,1.0f)
+            val anchor = Session(context).createAnchor(Pose(pos,rotation))
+            */
             node = AnchorNode().apply {
+
                 setParent(sceneView.scene)
                 localPosition = Vector3(x, y, z)
                 when(viewType) {
@@ -233,9 +316,10 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
                         setCameraStart()
                     }
                     ViewType.Node -> {
-
-                        finalScale = 1.2f
+                        //localRotation = Quaternion.axisAngle(Vector3.right(), -90.0f)
                         localScale = Vector3(finalScale, finalScale, finalScale)
+                        finalNodeRotation = localRotation
+                        //sceneView.scene.camera.localRotation = Quaternion.axisAngle(Vector3.right(), -30.0f)
                     }
                 }
                 name = id
@@ -244,7 +328,7 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
 
             }
 
-
+            if(viewType == ViewType.Node) rotateNode(0.0f, 0.0f)
             val aniData = rm.getAnimationData(0)
             animator = ModelAnimator(aniData, rm)
             animator?.start()

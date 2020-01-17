@@ -127,6 +127,7 @@ abstract class Camera : RxFrameLayout, PageRequestPermission {
     private var initCameraRunnable: Runnable = Runnable { initCamera() }
     private var releaseCameraRunnable: Runnable = Runnable { releaseCamera() }
     private var isHardwareLevelSupported:Boolean = false
+    var isExtraction = false
     var maxZoom: Float = 1.0f
     var minZoom: Float = 1.0f
     var zoomRect: Rect = Rect()
@@ -483,6 +484,7 @@ abstract class Camera : RxFrameLayout, PageRequestPermission {
                     captureMode = if( isHardwareLevelSupported ) CaptureMode.ExtractionData else CaptureMode.ExtractionBitmap
 
                     textureView?.let{
+
                         val size = it.bitmap.width * it.bitmap.height
                         Log.d(appTag, "captureMode size ${it.bitmap.width} ${it.bitmap.height}")
                         if(captureMode == CaptureMode.ExtractionBitmap && size > (300*300)){
@@ -491,8 +493,6 @@ abstract class Camera : RxFrameLayout, PageRequestPermission {
                     }
                 }
                 Log.d(appTag, "captureMode $captureMode")
-
-
                 cameraOutputSize?.let{ createImageReader(it.width, it.height) }
 
                 manager.openCamera(
@@ -619,6 +619,7 @@ abstract class Camera : RxFrameLayout, PageRequestPermission {
                                 captureSession = cameraCaptureSession
                                 try {
                                     requestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
+                                    requestBuilder.set(CaptureRequest.JPEG_QUALITY, 100 )
                                     requestBuilder.set(CaptureRequest.SCALER_CROP_REGION, zoomRect)
                                     setAutoFlash(requestBuilder)
                                     previewRequest = requestBuilder.build()
@@ -796,7 +797,7 @@ abstract class Camera : RxFrameLayout, PageRequestPermission {
             when (state) {
                 State.Preview -> {
                     onPreview()
-                    if(captureMode == CaptureMode.ExtractionBitmap){
+                    if(captureMode == CaptureMode.ExtractionBitmap && isExtraction){
                         previewSize ?: return
                         textureView?.let { onExtract(it.getBitmap(previewSize!!.width , previewSize!!.height)) }
                     }
@@ -885,10 +886,11 @@ abstract class Camera : RxFrameLayout, PageRequestPermission {
         }
     }
 
+
     private val onExtractionAvailableListener = ImageReader.OnImageAvailableListener { reader ->
         backgroundExecutor?.execute {
             val image = reader.acquireNextImage()
-            onExtract(image)
+            if(isExtraction) onExtract(image)
             image.close()
         }
     }

@@ -105,13 +105,12 @@
 
             <ImageButton
                 android:id="@+id/btnClose"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="right|center_vertical"
                 android:background="@color/transparent"
                 android:src="@drawable/btn_close_black"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:layout_marginLeft="80dp"
                 android:layout_marginRight="@dimen/margin_regular"/>
         </LinearLayout>

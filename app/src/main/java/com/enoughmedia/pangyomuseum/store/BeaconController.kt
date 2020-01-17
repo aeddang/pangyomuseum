@@ -65,11 +65,12 @@ class BeaconController (val ctx: Context, val setting: SettingPreference, val mu
         beaconManager?.beaconParsers?.add(BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"))
         beaconManager?.foregroundScanPeriod = 500L
         beaconManager?.foregroundBetweenScanPeriod = 500L
-
         beaconManager?.bind(this)
+        observable.onNext(BeaconEvent(Event.Bind))
     }
 
     fun destroyManager(){
+        observable.onNext(BeaconEvent(Event.UnBind))
         beaconManager?.unbind(this)
         regions.forEach {  beaconManager?.stopMonitoringBeaconsInRegion(it) }
         beaconManager = null
@@ -78,15 +79,17 @@ class BeaconController (val ctx: Context, val setting: SettingPreference, val mu
     override fun getApplicationContext(): Context = ctx
     override fun unbindService(p0: ServiceConnection?) {
         Log.i(appTag, "unbindService")
+
     }
 
     override fun bindService(p0: Intent?, p1: ServiceConnection?, p2: Int): Boolean {
         Log.i(appTag, "bindService")
+
         return true
     }
 
 
-    enum class Event{ EnterRegion,ExitRegion ,DetermineStateForRegion}
+    enum class Event{ EnterRegion,ExitRegion ,DetermineStateForRegion, Bind, UnBind}
     data class BeaconEvent(val type: Event, val value: String? = null)
     val observable = PublishSubject.create<BeaconEvent>()
 
@@ -94,13 +97,13 @@ class BeaconController (val ctx: Context, val setting: SettingPreference, val mu
         beaconManager?.removeAllMonitorNotifiers()
         beaconManager?.addMonitorNotifier(object : MonitorNotifier {
             override fun didEnterRegion(region: Region?) {
-                Toast.makeText(ctx, R.string.notice_beacon_find, Toast.LENGTH_LONG).show()
+                //Toast.makeText(ctx, R.string.notice_beacon_find, Toast.LENGTH_LONG).show()
                 Log.i(appTag, "${region.toString()} ${region?.uniqueId} ${region?.getIdentifier(0)} ")
                 observable.onNext(BeaconEvent(Event.EnterRegion, region?.uniqueId))
             }
 
             override fun didExitRegion(region: Region?) {
-                Toast.makeText(ctx, R.string.notice_beacon_out, Toast.LENGTH_LONG).show()
+                //Toast.makeText(ctx, R.string.notice_beacon_out, Toast.LENGTH_LONG).show()
                 Log.i(appTag, "I no longer see an beacon")
                 observable.onNext(BeaconEvent(Event.ExitRegion, region?.uniqueId))
             }

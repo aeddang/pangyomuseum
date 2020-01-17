@@ -6,17 +6,18 @@
     android:keepScreenOn="true"
     android:background="@color/colorBlackLight">
 
-    <ImageView
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/map" />
-
     <FrameLayout
         android:id="@+id/areaMaker"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginRight="100dp">
+
+        <ImageView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/map" />
     </FrameLayout>
 
     <FrameLayout
@@ -31,30 +32,90 @@
             android:layout_gravity="right|top"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginRight="@dimen/margin_medium">
+             <LinearLayout
+                 android:id="@+id/btnBook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="right|top"
+                android:layout_marginRight="@dimen/margin_medium">
+                 <ImageView
+                     android:layout_width="48dp"
+                     android:layout_height="48dp"
+                     android:layout_gravity="center"
+                     android:background="@color/transparent"
+                     android:scaleType="fitXY"
+                     app:srcCompat="@drawable/btn_book"
+                     />
+                 <TextView
+                     style="@style/font_regular"
+                     android:layout_marginTop="@dimen/margin_extra_thin"
+                     android:layout_gravity="center_horizontal|bottom"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:textAlignment="center"
+                     android:text="@string/page_book_title"
+                     android:textSize="@dimen/font_light"
+                     android:textColor="@color/colorWhite"
+                     />
+             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/btnBook"
-                android:layout_width="67dp"
-                android:layout_height="67dp"
-                android:layout_marginRight="@dimen/margin_medium"
-                android:background="@color/transparent"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/btn_book" />
-            <ImageButton
+            <LinearLayout
                 android:id="@+id/btnGuide"
-                android:layout_width="67dp"
-                android:layout_height="67dp"
-                android:background="@color/transparent"
-                android:scaleType="fitXY"
-                android:layout_marginRight="@dimen/margin_medium"
-                app:srcCompat="@drawable/btn_guide" />
-            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="right|top"
+                android:layout_marginRight="@dimen/margin_medium">
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:background="@color/transparent"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/btn_guide"
+                    />
+                <TextView
+                    style="@style/font_regular"
+                    android:layout_marginTop="@dimen/margin_extra_thin"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="@string/popup_guide_title"
+                    android:textSize="@dimen/font_light"
+                    android:textColor="@color/colorWhite"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/btnSetup"
-                android:layout_width="67dp"
-                android:layout_height="67dp"
-                android:background="@color/transparent"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/btn_setup" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="right|top"
+                android:layout_marginRight="@dimen/margin_medium">
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:background="@color/transparent"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/btn_setup"
+                    />
+                <TextView
+                    style="@style/font_regular"
+                    android:layout_marginTop="@dimen/margin_extra_thin"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="@string/popup_setting_title"
+                    android:textSize="@dimen/font_light"
+                    android:textColor="@color/colorWhite"
+                    />
+            </LinearLayout>
+
 
 
 
@@ -68,9 +129,22 @@
             android:layout_marginRight="@dimen/margin_medium"
             />
     </FrameLayout>
-    <com.enoughmedia.pangyomuseum.component.InfoMessage
-        android:id="@+id/infoMessage"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="@dimen/margin_regular"
+        android:layout_marginRight="@dimen/margin_medium">
+    <com.enoughmedia.pangyomuseum.component.InfoMessage
+        android:id="@+id/infoMessage0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"/>
+    <com.enoughmedia.pangyomuseum.component.InfoMessage
+        android:id="@+id/infoMessage1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"/>
+    </LinearLayout>
 </FrameLayout>

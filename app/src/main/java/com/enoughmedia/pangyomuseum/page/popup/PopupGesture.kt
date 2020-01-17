@@ -39,6 +39,7 @@ class PopupGesture  : RxPageFragment() {
         step0.setData(null, 0)
         step1.setData(null, 1)
         step2.setData(null, 2)
+        step3.setData(null, 3)
         btnCheck.isChecked = true
         setting.putViewGesture(true)
     }

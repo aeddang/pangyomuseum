@@ -6,7 +6,9 @@ import com.google.android.exoplayer2.util.Log
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
+import kotlin.math.atan2
 import kotlin.math.floor
+import kotlin.math.sqrt
 
 class Gesture(var delegate: Delegate?, private val isVertical: Boolean, private val isHorizontal: Boolean) {
     private val appTag = javaClass.simpleName
@@ -34,11 +36,18 @@ class Gesture(var delegate: Delegate?, private val isVertical: Boolean, private 
     var changePosA: ArrayList<Point> private set
     var movePosA: ArrayList<Point> private set
 
+    var deltaDist:Float = 0.0f; private set
     var deltaX:Int = 0; private set
         get() { return originPosA[0].x - startPosA[0].x + changePosA[0].x }
 
     var deltaY:Int = 0; private set
         get() { return originPosA[0].y - startPosA[0].y + changePosA[0].y }
+
+    var deltaPinchX:Int = 0; private set
+        get() { return originPosA.map{ it.x }.sum() - startPosA.map{ it.x }.sum() + changePosA.map{ it.x }.sum() }
+
+    var deltaPinchY:Int = 0; private set
+        get() { return originPosA.map{ it.y }.sum() - startPosA.map{ it.y }.sum() + changePosA.map{ it.y }.sum() }
 
     private var moveType = MoveType.NONE
     private var isEventStart: Boolean = false
@@ -63,6 +72,10 @@ class Gesture(var delegate: Delegate?, private val isVertical: Boolean, private 
         delegate = null
     }
 
+
+    fun resetPosition(){
+        startEvent(movePosA)
+    }
 
     fun adjustEvent(event: MotionEvent): Boolean {
         val action = event.action
@@ -236,10 +249,10 @@ class Gesture(var delegate: Delegate?, private val isVertical: Boolean, private 
             }
             catch (e: IndexOutOfBoundsException){return}
 
-            if (startDistance == 0f) startDistance = Math.sqrt(((Math.abs(start.x - start2.x) xor 2) + (Math.abs(start.y - start2.y) xor 2)).toDouble()).toFloat()
+            if (startDistance == 0f) startDistance = sqrt(((abs(start.x - start2.x) xor 2) + (abs(start.y - start2.y) xor 2)).toDouble()).toFloat()
 
             val startDist = startDistance
-            val moveDist = Math.sqrt(((Math.abs(move.x - move2.x) xor 2) + (Math.abs(move.y - move2.y) xor 2)).toDouble()).toFloat()
+            val moveDist = sqrt(((abs(move.x - move2.x) xor 2) + (abs(move.y - move2.y) xor 2)).toDouble()).toFloat()
             val dist = moveDist - startDist
 
             val rotate:Float
@@ -248,54 +261,39 @@ class Gesture(var delegate: Delegate?, private val isVertical: Boolean, private 
             if (startRotate == 0f) {
                 w = (start.x - start2.x).toFloat()
                 h = (start.y - start2.y).toFloat()
-                startRotate = (Math.atan2(h.toDouble(), w.toDouble()) / Math.PI * 360).toFloat()
+                startRotate = (atan2(h.toDouble(), w.toDouble()) / Math.PI * 360).toFloat()
             }
             w = (move.x - move2.x).toFloat()
             h = (move.y - move2.y).toFloat()
-            rotate = (Math.atan2(h.toDouble(), w.toDouble()) / Math.PI * 360).toFloat()
+            rotate = (atan2(h.toDouble(), w.toDouble()) / Math.PI * 360).toFloat()
             delegate?.rotateChange(this, rotate)
 
-            if (isComplete && Math.abs(startRotate - rotate) > changeRotate) delegate?.gestureComplete( this,
-                Type.PINCH_ROTATE
-            )
+            if (isComplete && abs(startRotate - rotate) > changeRotate) delegate?.gestureComplete( this, Type.PINCH_ROTATE)
             if (isComplete) {
-                if (Math.abs(dist) > changeMin) {
-                    if (dist > 0) delegate?.gestureComplete(this,
-                        Type.PINCH_OUT
-                    )
-                    else delegate?.gestureComplete(this,
-                        Type.PINCH_IN
-                    )
+                if (abs(dist) > changeMin) {
+                    if (dist > 0) delegate?.gestureComplete(this, Type.PINCH_OUT)
+                    else delegate?.gestureComplete(this, Type.PINCH_IN)
                 }
                 else {
                     when(moveType) {
                         MoveType.HORIZONTAL -> {
                             moveMD = change.x / gestureTime
-                            if (moveMD > changeMax) delegate?.gestureComplete(this,
-                                Type.PINCH_RIGHT
-                            )
-                            else if (moveMD < -changeMax) delegate?.gestureComplete(this,
-                                Type.PINCH_LEFT
-                            )
+                            if (moveMD > changeMax) delegate?.gestureComplete(this, Type.PINCH_RIGHT)
+                            else if (moveMD < -changeMax) delegate?.gestureComplete(this, Type.PINCH_LEFT)
                         }
                         MoveType.VERTICAL -> {
                             moveMD = change.y / gestureTime
-                            if (moveMD > changeMax) delegate?.gestureComplete(this,
-                                Type.PINCH_DOWN
-                            )
-                            else if (moveMD < -changeMax) delegate?.gestureComplete(this,
-                                Type.PINCH_UP
-                            )
+                            if (moveMD > changeMax) delegate?.gestureComplete(this, Type.PINCH_DOWN)
+                            else if (moveMD < -changeMax) delegate?.gestureComplete(this, Type.PINCH_UP)
                         }
                         else -> { }
                     }
                 }
             }
             else {
-                if (Math.abs(dist) > 1.0f) delegate?.pinchChange(this, dist)
-                else delegate?.stateChange(this,
-                    Type.PINCH_MOVE
-                )
+                deltaDist = dist
+                if (abs(dist) > 1.0f) delegate?.pinchChange(this, dist)
+                delegate?.stateChange(this, Type.PINCH_MOVE)
             }
         }
     }

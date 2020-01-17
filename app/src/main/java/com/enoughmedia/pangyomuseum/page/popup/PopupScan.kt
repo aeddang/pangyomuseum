@@ -50,7 +50,7 @@ class PopupScan  : RxPageFragment() {
         super.onCreatedView()
         findCodes = museum.findQRCodes
         camera.startCamera()
-        camera.isExtraction = true
+
 
     }
 
@@ -61,8 +61,10 @@ class PopupScan  : RxPageFragment() {
 
     override fun onTransactionCompleted() {
         super.onTransactionCompleted()
-        if(!setting.getViewScanGuide()) infoMessage.viewMessage(R.string.popup_scan_guide, InfoMessage.Type.Marker)
+        //if(!setting.getViewScanGuide())
+        infoMessage.viewMessage(R.string.popup_scan_guide, InfoMessage.Type.Marker)
         setting.putViewScanGuide(true)
+        camera.isExtraction = true
     }
 
     override fun onSubscribe() {
@@ -104,6 +106,7 @@ class PopupScan  : RxPageFragment() {
             Log.i(appTag, "result ${result.text}")
             val find = findCodes.find { it == result.text }
             find?.let { f->
+                camera.isExtraction = false
                 val mounds = museum.getMoundByCode(f)
                 mounds?.let { findObservable?.onNext(it) }
             }

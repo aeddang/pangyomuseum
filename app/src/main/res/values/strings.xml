@@ -13,8 +13,8 @@
     <string name="page_map_camera_guide">카메라 버튼을 누르고 주변에\n마커 이미지를 비춰보세요.</string>
     <string name="page_mounds_find_info">새로운 유물이\n도감에 수집되었습니다.</string>
 
-    <string name="popup_scan_guide">마커 이미지를\n찾아 비춰보세요.</string>
-    <string name="popup_scan_find_info">발견!!!</string>
+    <string name="popup_scan_guide">마커 이미지를 찾아 비춰보세요.</string>
+    <string name="popup_scan_find_info"> 발견!!!</string>
 
     <string name="page_book_title">유물 도감</string>
     <string name="page_book_find">찾은 유물</string>
@@ -32,6 +32,7 @@
     <string name="popup_gesture_text0">확대</string>
     <string name="popup_gesture_text1">축소</string>
     <string name="popup_gesture_text2">회전</string>
+    <string name="popup_gesture_text3">이동</string>
 
     <string name="popup_setting_title">"설정"</string>
 

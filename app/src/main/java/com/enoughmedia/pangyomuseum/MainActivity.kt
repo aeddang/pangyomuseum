@@ -29,6 +29,7 @@ class MainActivity :PageActivity<PageID>(), Rx {
 
     override fun onWillChangePageFragment(id: PageID, param: Map<String, Any?>?, isPopup: Boolean) {
         loaded()
+        if(!isPopup) hideMessage()
         val isFullScreen = PageFactory.getInstance().isFullScreenPage(id)
         if (isFullScreen) CommonUtil.enterFullScreenMode(this)
         else CommonUtil.enterDefaultMode(this)
@@ -79,6 +80,10 @@ class MainActivity :PageActivity<PageID>(), Rx {
     }
     fun viewMessage(@StringRes resId: Int, type: InfoMessage.Type = InfoMessage.Type.Default, duration:Long = -1L){
         globalInfoMessage.viewMessage(resId, type, duration)
+    }
+
+    fun hideMessage(){
+        globalInfoMessage.hideMessage()
     }
 
     override fun getPageIn(isBack: Boolean): Int = if (isBack) R.anim.slide_in_left else R.anim.slide_in_right

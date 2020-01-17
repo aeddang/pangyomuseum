@@ -49,7 +49,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
-
+        <com.enoughmedia.pangyomuseum.page.popup.ItemGesture
+            android:id="@+id/step3"
+            layout="@layout/item_quide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
     </LinearLayout>
 
     <include

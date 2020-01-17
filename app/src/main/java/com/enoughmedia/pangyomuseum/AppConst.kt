@@ -5,7 +5,7 @@ object AppConst {
 }
 
 object PreferenceName{
-    const val SETTING: String = "pref_setting_v02"
+    const val SETTING: String = "pref_setting_v03"
 }
 
 

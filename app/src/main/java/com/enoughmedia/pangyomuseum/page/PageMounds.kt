@@ -52,7 +52,7 @@ class PageMounds  : RxPageFragment() {
 
     override fun onCreatedView() {
         super.onCreatedView()
-        //sceneViewBox.viewType = SceneViewWorld.ViewType.World
+        sceneViewBox.viewType = SceneViewBox.ViewType.World
         mounds = viewModel.repo.museum.getMound(moundsId)
         mounds?.let {
             infoBox.moundsTitle =  it.title

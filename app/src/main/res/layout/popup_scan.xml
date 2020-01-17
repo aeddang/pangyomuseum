@@ -14,22 +14,25 @@
         android:layout_gravity="center"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="306dp"
-            android:layout_height="306dp"
+            android:layout_width="215dp"
+            android:layout_height="215dp"
             android:src="@drawable/scan_guide"
             android:layout_gravity="center"
             android:scaleType="fitXY"/>
-        <com.enoughmedia.pangyomuseum.component.InfoMessage
-            android:id="@+id/infoMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+
 
     </LinearLayout>
+    <com.enoughmedia.pangyomuseum.component.InfoMessage
+        android:id="@+id/infoMessage"
+        android:layout_marginBottom="@dimen/margin_light"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <include
         android:id="@+id/btnClose"
         layout="@layout/btn_close"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_gravity="right|top"
         android:layout_marginTop="@dimen/margin_regular"
         android:layout_marginRight="@dimen/margin_regular" />

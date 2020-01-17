@@ -38,7 +38,6 @@ class PopupSetting  : RxPageFragment() {
     override fun onCreatedView() {
         super.onCreatedView()
         switchBecon.isChecked = setting.getUseBecon()
-        switchSound.isChecked = setting.getUseSound()
     }
 
     override fun onDestroyedView() {
@@ -54,9 +53,7 @@ class PopupSetting  : RxPageFragment() {
         switchBecon.checkedChanges().subscribe {
             setting.putUseBecon(it)
         }.apply { disposables.add(this) }
-        switchSound.checkedChanges().subscribe {
-            setting.putUseSound(it)
-        }.apply { disposables.add(this) }
+
 
         btnReset.clicks().subscribe {
             context ?: return@subscribe

@@ -19,7 +19,7 @@ data class Mounds(
     val group:Int,
     val idx:Int
     ){
-
+    var isFind = false
     var antiquitise = ArrayList<Antiquity>(); private set
     fun addAntiquity(antiquity:Antiquity){
         antiquity.idx = antiquitise.size
@@ -47,15 +47,15 @@ data class Mounds(
     val markerPos:PointF?
         get() {
             return when(id){
-                "0" -> PointF(515f/1645f,0f/978f)
-                "1" -> PointF(825f/1645f,15f/978f)
-                "2" -> PointF(1011f/1645f,15f/978f)
-                "3" -> PointF(286f/1645f,471f/978f)
-                "4" -> PointF(722f/1645f,362f/978f)
-                "5" -> PointF(952f/1645f,283f/978f)
-                "6" -> PointF(1194f/1645f,247f/978f)
-                "9" -> PointF(277f/1645f,733f/978f)
-                "10" -> PointF(621f/1645f,563f/978f)
+                "0" -> PointF(825f/1645f,15f/978f)
+                "1" -> PointF(1011f/1645f,15f/978f)
+                "2" -> PointF(515f/1645f,0f/978f)
+                "3" -> PointF(1194f/1645f,247f/978f)
+                "4" -> PointF(952f/1645f,283f/978f)
+                "5" -> PointF(722f/1645f,362f/978f)
+                "8" -> PointF(286f/1645f,471f/978f)
+                "9" -> PointF(621f/1645f,563f/978f)
+                "10" -> PointF(277f/1645f,733f/978f)
                 else -> null
             }
         }
@@ -89,7 +89,10 @@ data class Mounds(
         get() {
             return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:string/data_mounds${id}_desc", null, null)
         }
-
+    val addressResource:Int
+        get() {
+            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:string/data_mounds${id}_address", null, null)
+        }
     val title:String
         get() {
             return ctx.getString(titleResource)
@@ -97,6 +100,11 @@ data class Mounds(
     val desc:String
         get() {
             return ctx.getString(descResource)
+        }
+
+    val address:String
+        get() {
+            return ctx.getString(addressResource)
         }
 
     val worldVec3: Vector3

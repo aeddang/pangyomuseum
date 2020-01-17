@@ -71,7 +71,7 @@ class PopupVR  : RxPageFragment() {
 
     override fun onCreatedView() {
         super.onCreatedView()
-
+        textAddress.text = mounds?.address
         vrPanoramaView.setFullscreenButtonEnabled(false)
         vrPanoramaView.setStereoModeButtonEnabled(false)
         vrPanoramaView.setInfoButtonEnabled(false)

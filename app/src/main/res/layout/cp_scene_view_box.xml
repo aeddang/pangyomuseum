@@ -6,7 +6,6 @@
 
     <com.google.ar.sceneform.SceneView
         android:id="@+id/sceneView"
-        android:layout_margin="2dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBlack"
