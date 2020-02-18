@@ -100,7 +100,7 @@
     file: 'sampledata/models/mounds8.fbx',
     name: 'mounds8',
     recenter: 'root',
-    scale: 0.76514300000000002,
+    scale: 0.83227300000000004,
   },
   samplers: [
     {

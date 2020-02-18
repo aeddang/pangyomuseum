@@ -8,6 +8,7 @@ import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.annotation.RawRes
+import androidx.core.content.ContextCompat
 import com.enoughmedia.pangyomuseum.MainActivity
 import com.enoughmedia.pangyomuseum.PageID
 import com.enoughmedia.pangyomuseum.PageParam
@@ -17,26 +18,31 @@ import com.enoughmedia.pangyomuseum.model.Mounds
 import com.google.ar.core.Pose
 import com.google.ar.core.Session
 import com.google.ar.sceneform.AnchorNode
+import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.animation.ModelAnimator
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ModelRenderable
+import com.google.ar.sceneform.rendering.Texture
 import com.lib.model.Gesture
 import com.lib.page.PagePresenter
 import com.lib.util.Log
 import com.skeleton.rx.RxFrameLayout
 import kotlinx.android.synthetic.main.cp_scene_view_box.view.*
 import java.util.function.Consumer
-import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.floor
-import kotlin.math.sin
+import kotlin.math.*
 
 
 class SceneViewBox : RxFrameLayout , Gesture.Delegate {
     enum class ViewType{
         World,
         Node
+    }
+
+    enum class NodeType{
+        Child,
+        Background,
+        Parent
     }
 
     constructor(context: Context) : super(context)
@@ -63,7 +69,7 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
         antiquities = mounds.antiquitise
         worldVec3 = mounds.worldVec3
         renderModel(mounds.modelResource, mounds.id)
-
+        renderModel(R.raw.skyandground, "sky", NodeType.Background)
     }
 
     override fun onDestroyedView() {
@@ -105,12 +111,16 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
         when (e) {
             Gesture.Type.TOUCH ->{
                 if(viewType != ViewType.World) return
+                if(g.movePosA.size < 1) return
                 val ray = sceneView.scene.camera.screenPointToRay(g.movePosA[0].x.toFloat(), g.movePosA[0].y.toFloat())
                 val finds = sceneView.scene.hitTestAll(ray)
                 Log.i(appTag, "finds ${finds.size} ")
-                val child = finds.find { if( it.node == null ) false else node?.name != it.node?.name }?.node
+                val child = finds.find { if( it.node == null || it.node?.name == "sky") false else node?.name != it.node?.name }?.node
                 child ?: return
+                Log.i(appTag, "child ${child.name} ")
                 val anti = antiquities?.find { it.id ==  child.name }
+
+                Log.i(appTag, "anti ${anti?.id} ")
                 anti?.let {findAntiquity(it)}
             }
             else -> { }
@@ -120,10 +130,11 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
 
 
     val scaleSensitivity = 25.0f
-    val moveSensitivity = 300.0f
+    val moveSensitivity = 600.0f
     val roteSensitivity = 5.0f
     var cameraZ  = 0.1f
-    var finalScale  = 1.0f
+    var limitedY  = -0.3f
+    var finalScale  = 1.5f
     var deltaScale = finalScale
     var finalRotation  = PointF(0.0f,0.0f)
     var deltaRotation  = PointF(0.0f,0.0f)
@@ -149,6 +160,7 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
     private fun setCameraStart(){
         deltaScale = -0.7f
         deltaRotation  = PointF(180.0f,-20f)
+        //sceneView.scene.camera.
         rotateCamera(deltaRotation.x, deltaRotation.y)
         zoomCamera(deltaScale)
         touchReset()
@@ -157,8 +169,9 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
     private fun zoomCamera(delta:Float){
         val forword:Vector3  = sceneView.scene.camera.forward
         val x = forword.x * delta + finalCameraPosition.x
-        val y = forword.y * delta + finalCameraPosition.y
+        var y = forword.y * delta + finalCameraPosition.y
         val z = forword.z * delta + finalCameraPosition.z
+        y = max(y, limitedY)
         sceneView.scene.camera.localPosition = Vector3(x,y,z)
 
     }
@@ -168,8 +181,9 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
         val up:Vector3  = sceneView.scene.camera.up
         val forword:Vector3  = sceneView.scene.camera.forward
         val x = (left.x * deltaX) + (up.x * deltaY) + (forword.x * deltaZ) +finalCameraPosition.x
-        val y = (left.y * deltaX) + (up.y * deltaY) + (forword.y * deltaZ) +finalCameraPosition.y
+        var y = (left.y * deltaX) + (up.y * deltaY) + (forword.y * deltaZ) +finalCameraPosition.y
         val z = (left.z * deltaX) + (up.z * deltaY) + (forword.z * deltaZ) +finalCameraPosition.z
+        y = max(y, limitedY)
         sceneView.scene.camera.localPosition = Vector3(x,y,z)
     }
     private fun rotateNode(deltaX:Float, deltaY:Float){
@@ -269,14 +283,18 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
 
 
 
-    private fun renderModel(@RawRes res:Int, id:String? = "", isChild:Boolean = false, anti:Antiquity?=null) {
+    private fun renderModel(@RawRes res:Int, id:String? = "", type:NodeType = NodeType.Parent, anti:Antiquity?=null) {
         ModelRenderable.builder()
             .setSource(context, res)
             .build()
-            .thenAccept(
-                Consumer {
-                    if(isChild) addChildNode(it, id, anti) else addNode(it, id)
-                })
+            .thenAccept {
+                when(type){
+                    NodeType.Parent -> addNode(it, id)
+                    NodeType.Child -> addChildNode(it, id, anti)
+                    NodeType.Background -> addBackgroundNode(it, id)
+                }
+
+            }
             .exceptionally {
                 Log.e(appTag, "${it.message}")
                 return@exceptionally null
@@ -340,11 +358,25 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
                 }
                 override fun onAnimationEnd(animation: Animator?) {
                     antiquities?.forEach {ant->
-                        renderModel(ant.modelResource, ant.id, true, ant)
+                        renderModel(ant.modelResource, ant.id, NodeType.Child, ant)
                     }
                 }
 
             })
+        }
+    }
+
+    private fun addBackgroundNode(model: ModelRenderable?, id:String? = "") {
+        model?.let { rm->
+            node = AnchorNode().apply {
+                setParent(sceneView.scene)
+                localScale = Vector3(25.0f, 25.0f, 25.0f)
+                localPosition = Vector3(0.0f, -0.48f, 0.0f)
+                name = id
+                renderable = rm
+                isSmoothed = true
+            }
+
         }
     }
 

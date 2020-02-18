@@ -130,6 +130,11 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$rootProject.leakcanaryVersion"
 }
 
+sceneform.asset('sampledata/models/skyandground.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/skyandground.sfa',
+        'src/main/res/raw/skyandground')
+
 
 sceneform.asset('sampledata/models/mounds0.fbx', // 'Source Asset Path' specified during import.
         'default',
@@ -154,10 +159,7 @@ sceneform.asset('sampledata/models/mounds4.fbx', // 'Source Asset Path' specifie
         'sampledata/models/mounds4.sfa',
         'src/main/res/raw/mounds4')
 
-sceneform.asset('sampledata/models/mounds7.fbx', // 'Source Asset Path' specified during import.
-        'default',
-        'sampledata/models/mounds7.sfa',
-        'src/main/res/raw/mounds7')
+
 sceneform.asset('sampledata/models/mounds9.fbx', // 'Source Asset Path' specified during import.
         'default',
         'sampledata/models/mounds9.sfa',
@@ -173,7 +175,10 @@ sceneform.asset('sampledata/models/mounds6.fbx', // 'Source Asset Path' specifie
         'sampledata/models/mounds6.sfa',
         'src/main/res/raw/mounds6')
 
-
+sceneform.asset('sampledata/models/mounds7.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/mounds7.sfa',
+        'src/main/res/raw/mounds7')
 
 sceneform.asset('sampledata/models/mounds8.fbx', // 'Source Asset Path' specified during import.
         'default',
@@ -189,6 +194,8 @@ sceneform.asset('sampledata/models/mounds10.fbx', // 'Source Asset Path' specifi
 
 
 /*
+
+
 
 sceneform.asset('sampledata/models/antiquity8_81.fbx', // 'Source Asset Path' specified during import.
         'default',

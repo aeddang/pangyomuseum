@@ -1,0 +1,112 @@
+{
+  animations: [
+    {
+      path: 'sampledata/models/skyandground.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'sky',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'sky1',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+    {
+      name: 'ground',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'sand01 diffuse2_2',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/skyandground.fbx',
+    name: 'skyandground',
+    recenter: 'root',
+    scale: 0.0071910000000000003,
+  },
+  samplers: [
+    {
+      file: 'sampledata/models/skyandground.fbm/sand01 diffuse2_2.jpg',
+      name: 'sand01 diffuse2_2',
+      pipeline_name: 'skyandground.fbm/sand01 diffuse2_2.jpg',
+    },
+    {
+      file: 'sampledata/models/skyandground.fbm/sky1.jpg',
+      name: 'sky1',
+      pipeline_name: 'skyandground.fbm/sky1.jpg',
+    },
+  ],
+  version: '0.54:2',
+}
