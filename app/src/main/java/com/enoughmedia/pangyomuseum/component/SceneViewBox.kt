@@ -1,35 +1,32 @@
 package com.enoughmedia.pangyomuseum.component
 
 import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Path
 import android.graphics.PointF
+import android.media.AudioAttributes
+import android.media.SoundPool
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.annotation.RawRes
-import androidx.core.content.ContextCompat
 import com.enoughmedia.pangyomuseum.MainActivity
 import com.enoughmedia.pangyomuseum.PageID
 import com.enoughmedia.pangyomuseum.PageParam
 import com.enoughmedia.pangyomuseum.R
 import com.enoughmedia.pangyomuseum.model.Antiquity
 import com.enoughmedia.pangyomuseum.model.Mounds
-import com.google.ar.core.Pose
-import com.google.ar.core.Session
 import com.google.ar.sceneform.AnchorNode
-import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.animation.ModelAnimator
 import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ModelRenderable
-import com.google.ar.sceneform.rendering.Texture
 import com.lib.model.Gesture
 import com.lib.page.PagePresenter
 import com.lib.util.Log
 import com.skeleton.rx.RxFrameLayout
 import kotlinx.android.synthetic.main.cp_scene_view_box.view.*
-import java.util.function.Consumer
 import kotlin.math.*
 
 
@@ -42,7 +39,8 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
     enum class NodeType{
         Child,
         Background,
-        Parent
+        Parent,
+        Effect
     }
 
     constructor(context: Context) : super(context)
@@ -54,18 +52,31 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
     private lateinit var gesture: Gesture
     var viewType:ViewType = ViewType.Node
 
-    override fun onCreatedView() {
 
+
+
+    private val audioAttributes = AudioAttributes.Builder()
+        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+        .setUsage(AudioAttributes.USAGE_GAME)
+        .build()
+
+    private var soundId = 0
+    private val staticSoundPool: SoundPool = SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(20).build()
+    override fun onCreatedView() {
+        soundId = staticSoundPool.load(context, R.raw.effect_sound, 1)
     }
 
 
-    fun addRenderModel(@RawRes id:Int){
+    fun addRenderModel(@RawRes id:Int, scale:Float, rotate:Float){
+        finalScale = 1.5f * scale
+        localRotate = rotate
         renderModel(id)
     }
 
     private var worldVec3:Vector3? = null
     private var antiquities:ArrayList<Antiquity>? = null
     fun addMounds(mounds: Mounds){
+        finalScale = 1.0f
         antiquities = mounds.antiquitise
         worldVec3 = mounds.worldVec3
         renderModel(mounds.modelResource, mounds.id)
@@ -121,7 +132,9 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
                 val anti = antiquities?.find { it.id ==  child.name }
 
                 Log.i(appTag, "anti ${anti?.id} ")
-                anti?.let {findAntiquity(it)}
+                anti?.let {
+                    renderModel(it.effectResource, it.id, NodeType.Effect, it)
+                }
             }
             else -> { }
         }
@@ -135,6 +148,7 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
     var cameraZ  = 0.1f
     var limitedY  = -0.3f
     var finalScale  = 1.5f
+    var localRotate  = 0.0f
     var deltaScale = finalScale
     var finalRotation  = PointF(0.0f,0.0f)
     var deltaRotation  = PointF(0.0f,0.0f)
@@ -158,8 +172,8 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
     }
 
     private fun setCameraStart(){
-        deltaScale = -0.7f
-        deltaRotation  = PointF(180.0f,-20f)
+        deltaScale = -1.5f
+        deltaRotation  = PointF(180.0f,-40f)
         //sceneView.scene.camera.
         rotateCamera(deltaRotation.x, deltaRotation.y)
         zoomCamera(deltaScale)
@@ -292,6 +306,7 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
                     NodeType.Parent -> addNode(it, id)
                     NodeType.Child -> addChildNode(it, id, anti)
                     NodeType.Background -> addBackgroundNode(it, id)
+                    NodeType.Effect -> addEffectNode(it, id, anti)
                 }
 
             }
@@ -329,15 +344,15 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
                 localPosition = Vector3(x, y, z)
                 when(viewType) {
                     ViewType.World -> {
-                        finalScale = 1.0f
+
                         localScale = Vector3(finalScale, finalScale, finalScale)
                         setCameraStart()
                     }
                     ViewType.Node -> {
-                        //localRotation = Quaternion.axisAngle(Vector3.right(), -90.0f)
+
                         localScale = Vector3(finalScale, finalScale, finalScale)
                         finalNodeRotation = localRotation
-                        //sceneView.scene.camera.localRotation = Quaternion.axisAngle(Vector3.right(), -30.0f)
+
                     }
                 }
                 name = id
@@ -359,6 +374,7 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
                 override fun onAnimationEnd(animation: Animator?) {
                     antiquities?.forEach {ant->
                         renderModel(ant.modelResource, ant.id, NodeType.Child, ant)
+
                     }
                 }
 
@@ -386,7 +402,9 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
                 setParent(sceneView.scene)
                 val pos = anti?.posVec3 ?: Vector3()
                 localPosition = pos
-                localScale = Vector3(3.0f,3.0f,3.0f)
+                val sc = 3.0f * (anti?.scale ?: 1.0f)
+                localRotation = Quaternion.axisAngle(Vector3.up(),anti?.rotate ?: 0.0f)
+                localScale = Vector3(sc,sc,sc)
                 name = id
                 renderable = rm
                 isSmoothed = true
@@ -397,6 +415,38 @@ class SceneViewBox : RxFrameLayout , Gesture.Delegate {
         }
     }
 
+    private fun addEffectNode(parent: ModelRenderable?, id:String? = "", anti:Antiquity?=null) {
+        parent?.let { rm->
+            val ani = ValueAnimator.ofFloat(0f, 1f)
+            val child = AnchorNode().apply {
+                setParent(sceneView.scene)
+                val pos = anti?.posVec3 ?: Vector3()
+                localPosition = Vector3(pos.x, pos.y + 0.02f, pos.z)
+                //name = id
+                renderable = rm
+                isSmoothed = true
+                val targetSc = 6.0f  * (anti?.scale ?: 1.0f)
+                ani.addUpdateListener {
+                    val ratio = it.animatedValue as Float
+                    val sc = targetSc * ratio
+                    localScale = Vector3(sc,sc,sc)
+                }
+            }
+            sceneView.scene.addChild(child)
+            staticSoundPool.play( soundId, 1.0f,1.0f,1,0,1.0f)
+
+            ani.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) { // done
+                    anti?.let { findAntiquity(it) }
+                    sceneView.scene.removeChild(child)
+                }
+            })
+            ani.duration = 300
+            ani.repeatCount = 1
+            ani.start()
+
+        }
+    }
 
     private fun findAntiquity(anti:Antiquity){
         openAntiquity(anti)

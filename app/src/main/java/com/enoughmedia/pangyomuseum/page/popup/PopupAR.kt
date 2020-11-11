@@ -46,7 +46,7 @@ class PopupAR  : RxPageFragment() {
             title.text = it.title
             info.text = it.info
             desc.text = it.desc
-            sceneViewBox.addRenderModel(it.modelResource)
+            sceneViewBox.addRenderModel(it.modelResource, it.scale, it.rotate)
         }
         shareImageID?.let {
             sharedElementEnterTransition = ChangeBounds()

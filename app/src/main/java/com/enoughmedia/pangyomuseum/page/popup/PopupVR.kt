@@ -3,6 +3,8 @@ package com.enoughmedia.pangyomuseum.page.popup
 import android.content.res.AssetManager
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import com.enoughmedia.pangyomuseum.PageID
 import com.enoughmedia.pangyomuseum.PageParam
 import com.enoughmedia.pangyomuseum.R
@@ -14,6 +16,7 @@ import com.google.vr.sdk.widgets.pano.VrPanoramaView
 import com.jakewharton.rxbinding3.view.clicks
 import com.lib.page.PageFragment
 import com.lib.page.PagePresenter
+import com.lib.util.Log
 import com.skeleton.module.ImageFactory
 import com.skeleton.rx.RxPageFragment
 import dagger.android.support.AndroidSupportInjection
@@ -23,6 +26,9 @@ import javax.inject.Inject
 
 
 class PopupVR  : RxPageFragment() {
+    companion object{
+        var vrPanoramaViewInstence : VrPanoramaView? = null
+    }
     enum class ViewType{
         Mono,
         Stereo
@@ -35,6 +41,7 @@ class PopupVR  : RxPageFragment() {
 
     private var mounds:Mounds? = null
     private var viewType:ViewType = ViewType.Mono
+    private var vrPanoramaView: VrPanoramaView? = null
     override fun setParam(param: Map<String, Any?>): PageFragment {
         mounds = param[PageParam.MOUNDS] as? Mounds
         viewType = param[PageParam.VIEW_TYPE] as? ViewType ?: viewType
@@ -44,6 +51,13 @@ class PopupVR  : RxPageFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidSupportInjection.inject(this)
+        vrPanoramaView = vrPanoramaViewInstence ?: VrPanoramaView(context)
+        if(vrPanoramaViewInstence == null){
+            vrPanoramaView?.setFullscreenButtonEnabled(false)
+            vrPanoramaView?.setStereoModeButtonEnabled(false)
+            vrPanoramaView?.setInfoButtonEnabled(false)
+            vrPanoramaViewInstence = vrPanoramaView
+        }
 
     }
 
@@ -60,7 +74,26 @@ class PopupVR  : RxPageFragment() {
             try {
                 inputStream = assetManager.open(path)
                 options.inputType = VrPanoramaView.Options.TYPE_MONO
-                vrPanoramaView.loadImageFromBitmap(BitmapFactory.decodeStream(inputStream), options)
+                vrPanoramaView?.loadImageFromBitmap(BitmapFactory.decodeStream(inputStream), options)
+                inputStream.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+    }
+
+    private fun loadDefaultSphere() {
+
+        mounds?.let {
+            val path = "panoramas/pano_black.jpg"
+            val options = VrPanoramaView.Options()
+            var inputStream: InputStream? = null
+            val assetManager: AssetManager = context!!.assets
+            try {
+                inputStream = assetManager.open(path)
+                options.inputType = VrPanoramaView.Options.TYPE_MONO
+                vrPanoramaView?.loadImageFromBitmap(BitmapFactory.decodeStream(inputStream), options)
                 inputStream.close()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -71,34 +104,55 @@ class PopupVR  : RxPageFragment() {
 
     override fun onCreatedView() {
         super.onCreatedView()
+        vrPanoramaViewArea.addView(vrPanoramaView)
         textAddress.text = mounds?.address
-        vrPanoramaView.setFullscreenButtonEnabled(false)
-        vrPanoramaView.setStereoModeButtonEnabled(false)
-        vrPanoramaView.setInfoButtonEnabled(false)
-        if(viewType == ViewType.Mono){
-            vrPanoramaView.displayMode = VrWidgetView.DisplayMode.EMBEDDED
-            loadPhotoSphere()
-        }
+
     }
+
 
     override fun onTransactionCompleted() {
         super.onTransactionCompleted()
-        if(viewType == ViewType.Stereo) {
-            vrPanoramaView.displayMode = VrWidgetView.DisplayMode.FULLSCREEN_STEREO
-            loadPhotoSphere()
-            vrPanoramaView.setEventListener(object : VrPanoramaEventListener() {
+
+        if(viewType == ViewType.Mono){
+            vrPanoramaView?.displayMode = VrWidgetView.DisplayMode.EMBEDDED
+            vrPanoramaView?.setEventListener(object : VrPanoramaEventListener() {
+                override fun onLoadError(errorMessage: String?) {
+                    super.onLoadError(errorMessage)
+                    Log.i(appTag, errorMessage ?: "error" )
+                }
+
+                override fun onLoadSuccess() {
+                    super.onLoadSuccess()
+                    Log.i(appTag, "onLoadSuccess" )
+
+                }
+            })
+
+        }else if(viewType == ViewType.Stereo) {
+            vrPanoramaView?.displayMode = VrWidgetView.DisplayMode.FULLSCREEN_STEREO
+            vrPanoramaView?.setEventListener(object : VrPanoramaEventListener() {
                 override fun onDisplayModeChanged(newDisplayMode: Int) {
                     super.onDisplayModeChanged(newDisplayMode)
                     if(newDisplayMode != VrWidgetView.DisplayMode.FULLSCREEN_STEREO) PagePresenter.getInstance<PageID>().closePopup(PageID.POPUP_VR)
                 }
             })
         }
+
+        loadPhotoSphere()
     }
 
 
     override fun onDestroyedView() {
         super.onDestroyedView()
+        loadDefaultSphere()
+        vrPanoramaViewArea.removeView(vrPanoramaView)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        vrPanoramaView = null
+    }
+
 
     override fun onSubscribe() {
         super.onSubscribe()

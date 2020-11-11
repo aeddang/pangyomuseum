@@ -25,10 +25,41 @@ android {
     dataBinding {
         enabled = true
     }
+
+    signingConfigs {
+        releaseWithSignedKey {
+            v1SigningEnabled true
+            v2SigningEnabled true
+            storeFile file("storekey")
+            storePassword "12qw34ER"
+            keyAlias "alias"
+            keyPassword "12qw34ER"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+        }
+        release_debug {
+            minifyEnabled false
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            signingConfig signingConfigs.releaseWithSignedKey
+        }
+        release {
+            minifyEnabled false
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            signingConfig signingConfigs.releaseWithSignedKey
         }
     }
     compileOptions {
@@ -69,14 +100,6 @@ dependencies {
     implementation "com.google.ar.sceneform.ux:sceneform-ux:$rootProject.arcoreVersion"
     implementation "com.google.ar.sceneform:core:$rootProject.arcoreVersion"
     implementation "com.google.ar.sceneform:animation:$rootProject.arcoreVersion"
-    /**
-     * Exo Player
-     */
-    implementation "com.google.android.exoplayer:exoplayer:$rootProject.exoplayerVersion"
-    implementation "com.google.android.exoplayer:exoplayer-core:$rootProject.exoplayerVersion"
-    implementation "com.google.android.exoplayer:exoplayer-dash:$rootProject.exoplayerVersion"
-    implementation "com.google.android.exoplayer:exoplayer-hls:$rootProject.exoplayerVersion"
-    implementation "com.google.android.exoplayer:exoplayer-smoothstreaming:$rootProject.exoplayerVersion"
 
     /**
      * Reactive Extension2
@@ -129,6 +152,13 @@ dependencies {
     // Optional, if you use support library fragments:
     debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$rootProject.leakcanaryVersion"
 }
+
+
+sceneform.asset('sampledata/models/effect.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/effect.sfa',
+        'src/main/res/raw/effect')
+
 
 sceneform.asset('sampledata/models/skyandground.fbx', // 'Source Asset Path' specified during import.
         'default',
@@ -192,7 +222,10 @@ sceneform.asset('sampledata/models/mounds10.fbx', // 'Source Asset Path' specifi
         'src/main/res/raw/mounds10')
 
 
-
+sceneform.asset('sampledata/models/antiquity2_27.fbx', // 'Source Asset Path' specified during import.
+        'default',
+        'sampledata/models/antiquity2_27.sfa',
+        'src/main/res/raw/antiquity2_27')
 /*
 
 

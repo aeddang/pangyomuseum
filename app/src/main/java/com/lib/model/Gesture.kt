@@ -2,7 +2,6 @@ package com.lib.model
 
 import android.graphics.Point
 import android.view.MotionEvent
-import com.google.android.exoplayer2.util.Log
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs

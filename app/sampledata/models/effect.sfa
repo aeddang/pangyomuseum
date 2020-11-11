@@ -1,23 +1,29 @@
 {
   animations: [
     {
-      path: 'sampledata/models/antiquity2_26.fbx',
+      clips: [
+        {
+          name: 'Take 001',
+          runtime_name: 'effect',
+        },
+      ],
+      path: 'sampledata/models/effect.fbx',
     },
   ],
   materials: [
     {
-      name: 'Material #27',
+      name: 'line',
       parameters: [
         {
           baseColor: [
-            1,
-            1,
+            0.52549000000000001,
+            0.99607800000000002,
             1,
             1,
           ],
         },
         {
-          baseColorMap: '0548',
+          baseColorMap: null,
         },
         {
           normalMap: null,
@@ -53,17 +59,10 @@
       'BoneWeights',
     ],
     collision: {},
-    file: 'sampledata/models/antiquity2_26.fbx',
-    name: 'antiquity2_26',
+    file: 'sampledata/models/effect.fbx',
+    name: 'effect',
     recenter: 'root',
-    scale: 1.286295,
+    scale: 25.493867999999999,
   },
-  samplers: [
-    {
-      file: 'sampledata/models/antiquity2_26.fbm/0548.jpg',
-      name: '0548',
-      pipeline_name: 'antiquity2_26.fbm/0548.jpg',
-    },
-  ],
   version: '0.54:2',
 }

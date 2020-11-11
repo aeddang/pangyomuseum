@@ -1,14 +1,17 @@
 package com.enoughmedia.pangyomuseum.component
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.widget.FrameLayout
 import com.enoughmedia.pangyomuseum.R
 import com.jakewharton.rxbinding3.view.clicks
 import com.lib.util.AnimationDuration
 import com.lib.util.animateAlpha
+import com.lib.util.animateFrame
 import com.lib.util.animateY
 import com.skeleton.rx.RxFrameLayout
 import io.reactivex.Observable
@@ -63,18 +66,27 @@ class InfoBox: RxFrameLayout {
 
     private fun onOpen(){
         btnOpen.setImageResource(R.drawable.btn_down)
+        /*
         animateY(0, true).apply {
             interpolator = AccelerateInterpolator()
             startAnimation(this)
         }
+        */
+
+        val layout = layoutParams as FrameLayout.LayoutParams
+        animateFrame(Rect(layout.leftMargin,0,layout.width, layout.height), false, true).start()
     }
 
     private fun onClose(){
         btnOpen.setImageResource(R.drawable.btn_open)
+        /*
         animateY(- desc.height, true).apply {
             interpolator = DecelerateInterpolator()
             startAnimation(this)
         }
+        */
+        val layout = layoutParams as FrameLayout.LayoutParams
+        animateFrame(Rect(layout.leftMargin,- desc.height ,layout.width, layout.height), false, true).start()
 
     }
 

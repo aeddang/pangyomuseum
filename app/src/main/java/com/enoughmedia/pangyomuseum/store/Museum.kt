@@ -25,8 +25,8 @@ class Museum(val ctx: Context, val setting:SettingPreference){
     val keys =  arrayOf(
         arrayOf(),
         arrayOf(),
-        arrayOf("21","22","23","24","25","26"),
-        arrayOf("31"),
+        arrayOf("21","22","23","24","25","26","27"),
+        arrayOf("31","32"),
         arrayOf("41","42","43","44","45","46","47"),
         arrayOf("51","52"),
         arrayOf("61","62"),

@@ -156,6 +156,11 @@ data class Antiquity(
             return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:raw/antiquity${moundsID}_${id}", null, null)
         }
 
+    val effectResource:Int
+        get() {
+            return ctx.resources.getIdentifier("${AppConst.PACKAGE_NAME}:raw/effect", null, null)
+        }
+
     val title:String
         get() {
             return ctx.getString(titleResource)
@@ -168,7 +173,22 @@ data class Antiquity(
         get() {
             return ctx.getString(descResource)
         }
-
+    val scale: Float
+        get() {
+            return  when(id){
+                "26" -> 0.7f
+                "75" -> 0.7f
+                "76" -> 0.7f
+                else -> 1.0f
+            }
+        }
+    val rotate: Float
+        get() {
+            return  when(id){
+                "75" -> 90.0f
+                else -> 0.0f
+            }
+        }
     val posVec3: Vector3
         get() {
             return  when(id){
@@ -178,34 +198,36 @@ data class Antiquity(
                 "24" -> Vector3(0.2f, -0.45f, 0.51f)
                 "25" -> Vector3(-0.22f, -0.45f, 0.63f)
                 "26" -> Vector3(0.25f, -0.45f, 1.12f)
+                "27" -> Vector3(-0.25f, -0.45f, 1.12f)
 
                 "31" -> Vector3(0.0f, -0.45f, 0.3f)
+                "32" -> Vector3(0.1f, -0.45f, 0.6f)
 
-                "41" -> Vector3(0.0f, -0.41f, 0.5f)
-                "42" -> Vector3(0.21f, -0.42f, 0.6f)
+                "41" -> Vector3(0.0f, -0.43f, 0.5f)
+                "42" -> Vector3(0.21f, -0.43f, 0.6f)
                 "43" -> Vector3(-0.4f, -0.43f, 0.81f)
-                "44" -> Vector3(0.2f, -0.44f, 0.41f)
-                "45" -> Vector3(-0.22f, -0.45f, 0.43f)
-                "46" -> Vector3(0.25f, -0.46f, 1.02f)
-                "47" -> Vector3(0.0f, -0.46f, 0.82f)
+                "44" -> Vector3(0.2f, -0.43f, 0.41f)
+                "45" -> Vector3(-0.22f, -0.43f, 0.43f)
+                "46" -> Vector3(0.25f, -0.43f, 1.02f)
+                "47" -> Vector3(0.0f, -0.43f, 0.82f)
 
-                "51" -> Vector3(0.0f, -0.42f, 0.3f)
+                "51" -> Vector3(0.0f, -0.42f, 1.3f)
                 "52" -> Vector3(0.21f, -0.42f, 0.6f)
 
-                "61" -> Vector3(0.0f, -0.42f, 0.5f)
-                "62" -> Vector3(0.1f, -0.42f, 1.1f)
+                "61" -> Vector3(0.0f, -0.42f, 1.5f)
+                "62" -> Vector3(0.12f, -0.42f, 0.9f)
 
-                "71" -> Vector3(0.0f, -0.41f, 1.3f)
-                "72" -> Vector3(0.12f, -0.42f, 0.7f)
-                "73" -> Vector3(-0.02f, -0.43f, 0.5f)
-                "74" -> Vector3(0.1f, -0.44f, 0.3f)
-                "75" -> Vector3(-0.1f, -0.45f, 0.7f)
-                "76" -> Vector3(0.0f, -0.42f, 0.9f)
+                "71" -> Vector3(0.2f, -0.41f, 1.3f)
+                "72" -> Vector3(0.2f, -0.42f, 1.0f)
+                "73" -> Vector3(-0.02f, -0.43f, 1.1f)
+                "74" -> Vector3(0.1f, -0.44f, 1.6f)
+                "75" -> Vector3(-0.15f, -0.45f, 1.7f)
+                "76" -> Vector3(-0.1f, -0.42f, 1.4f)
 
-                "81" -> Vector3(-0.1f, -0.41f, 0.5f)
+                "81" -> Vector3(-0.1f, -0.41f, 1.5f)
                 "82" -> Vector3(-0.05f, -0.42f, 0.9f)
 
-                "91" -> Vector3(-0.2f, -0.41f, 0.3f)
+                "91" -> Vector3(0f, -0.41f, 1.3f)
 
                 "101" -> Vector3(0.21f, -0.43f, 0.6f)
 

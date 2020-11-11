@@ -7,7 +7,6 @@ import com.enoughmedia.pangyomuseum.PageID
 import com.enoughmedia.pangyomuseum.PageParam
 import com.enoughmedia.pangyomuseum.R
 import com.enoughmedia.pangyomuseum.component.SceneViewBox
-import com.enoughmedia.pangyomuseum.component.SceneViewWorld
 import com.enoughmedia.pangyomuseum.model.Mounds
 import com.enoughmedia.pangyomuseum.model.MoundsID
 import com.enoughmedia.pangyomuseum.page.popup.PopupVR
@@ -18,11 +17,8 @@ import com.lib.page.PagePresenter
 import com.lib.util.animateAlpha
 import com.skeleton.module.ViewModelFactory
 import com.skeleton.rx.RxPageFragment
-import com.skeleton.view.player.PlayerEvent
-import com.skeleton.view.player.init
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.page_mounds.*
 import java.util.concurrent.TimeUnit
